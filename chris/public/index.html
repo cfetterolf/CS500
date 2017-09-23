@@ -1,76 +1,87 @@
 
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-  <head>
+  <title>Chris Fetterolf | Student, Developer, &amp; Designer</title>
+  <meta name="description" content="This is the home page of Chris Fetterolf, a software developer and student at Middlebury College.">
+  <meta name="author" content="Chris Fetterolf">
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <!-- Icon -->
+  <link rel="icon" href="img/logo.png" type="image/png">
 
-    <title>Bare - Start Bootstrap Template</title>
+  <!-- Open Graph - for social Media use -->
+  <meta prefix="og: http://ogp.me/ns#" property='og:title' content="Chris Fetterolf - Student, Developer, Designer" />
+  <meta prefix="og: http://ogp.me/ns#" property='og:image' content="http://media.chrisfetterolf.com/img/thumbnail.jpg" />
+  <meta prefix="og: http://ogp.me/ns#" property="og:description" content="This is the home page of Chris Fetterolf, a software developer and student at Middlebury College.  Read about my past experience, download my resume, and more." />
+  <meta prefix="og: http://ogp.me/ns#" property="og:url" content="http://www.chrisfetterolf.com" />
 
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FONT -->
+  <script src="https://use.typekit.net/dru0rgp.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond:300,400,500,600,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Fresca" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <style>
-      body {
-        padding-top: 54px;
-      }
-      @media (min-width: 992px) {
-        body {
-          padding-top: 56px;
-        }
-      }
+  <!-- To use: font-family: 'Zilla Slab', serif; -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway:200,300,500,700|Zilla+Slab:200,300,400,500,600,700" rel="stylesheet">
+  <!-- <script src="Tooltip.js" type="text/javascript"></script> -->
 
-    </style>
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
 
-  </head>
+  <link rel="icon" type="image/png" href="img/favicon.png">
+
+</head>
 
   <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="#">Start Bootstrap</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <!-- Navbar -->
+    <nav class="navbar navbar-toggleable-sm navbar-light bg-faded">
+      <button class="navbar-toggler navbar-toggler-right hover-click" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="http://www.chrisfetterolf.com"><strong>Login Template</strong></a>
+    </nav> <!-- ./Navbar -->
 
     <!-- Page Content -->
     <div class="container">
-      <div class="row">
-        <div class="col-lg-12 text-center">
-          <h1 class="mt-5">A Bootstrap 4 Starter Template</h1>
-          <p class="lead">Complete with pre-defined file paths and responsive navigation!</p>
-          <ul class="list-unstyled">
-            <li>Bootstrap 4.0.0-beta</li>
-            <li>jQuery 3.2.1</li>
-          </ul>
-        </div>
-      </div>
+      <div class="jumbotron mt-lg">
+        <form>
+
+          <!-- Name -->
+          <div class="form-group">
+            <label for="formGroupExampleInput">Name</label>
+            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Enter your name">
+          </div>
+
+          <!-- Member/Leader -->
+          <div class="form-check form-check-inline active">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" id="memberCheckbox" value="option1" checked="checked"> Member</input>
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" id="leaderCheckbox" value="option2"> Leader</input>
+            </label>
+          </div>
+
+          <div class="mt-lg"><h4>Schedule</h4></div>
+          <div class="form-group row">
+            <label for="monday" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+              <input type="password" class="form-control" id="monday" placeholder="Password">
+            </div>
+          </div>
+        </form>
     </div>
 
     <!-- Bootstrap core JavaScript -->
@@ -80,4 +91,11 @@
 
   </body>
 
+<!-- Essential Bootstrap -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+<script src="js/smoothScroll.js"></script>
+
+</body>
 </html>

@@ -8,7 +8,7 @@
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
   <title>Chris Fetterolf</title>
-  <meta name="description" content="This is the home page of Chris Fetterolf, a software developer and student at Middlebury College.">
+  <meta name="description" content="">
   <meta name="author" content="Chris Fetterolf">
 
   <!-- Icon -->
@@ -49,24 +49,66 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <a class="navbar-brand" href="http://www.chrisfetterolf.com"><strong>Form Template</strong></a>
+      <div style="margin-left: 50px;">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" onclick="showUserList()">Users <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onclick="showSchedule()">Schedule</a>
+          </li>
+        </ul>
+      </div>
     </nav> <!-- ./Navbar -->
 
     <!-- Page Content -->
-    <div class="container">
-      <div class="jumbotron mt-lg">
-        <form>
+    <div class="container user-list">
 
+      <div class="row mt-lg">
+
+        <h2>Current Users</h2>
+
+        <table class="table table-striped user-table" id="userTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Member</th>
+              <th>Leader</th>
+              <th>Availability</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- This gets filled with users w/ JS -->
+          </tbody>
+          <tfoot>
+            <tr id="addUserRow">
+              <td><button class="btn btn-success" id="addUserButton">Add User</button></td><td /><td /><td />
+            </tr>
+          </tfoot>
+        </table>
+
+      </div>
+
+      <div class="jumbotron mt-lg" id="addUserForm">
+        <h2>Add New User</h2>
+        <form class="mt-sm">
           <!-- Name -->
-          <div><h4>Info</h4></div>
+          <div class="mt-lg"><h4>User Information</h4></div>
           <div class="form-group row">
-            <label for="monday" class="col-sm-2 col-form-label">Name</label>
+            <label for="nameInput" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-10">
               <input class="form-control" id="nameInput" placeholder="First and Last">
             </div>
           </div>
+          <div class="form-group row">
+            <label for="emailInput" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="emailInput" placeholder="example@gmail.com">
+            </div>
+          </div>
 
           <!-- Member/Leader -->
-          <div class="form-check form-check-inline active mt-sm">
+          <div class="form-check form-check-inline active">
             <label class="form-check-label">
               <input class="form-check-input" type="checkbox" id="memberCheckbox" value="option1" checked="checked"> Member</input>
             </label>
@@ -78,7 +120,7 @@
           </div>
 
           <!-- Preferred Leaders -->
-          <div class="mt-lg"><h4>Choose Leaders</h4></div>
+          <div class="mt-lg"><h4>Preferred Leaders</h4></div>
           <div class="form-check form-check-inline active mt-sm">
             <label class="form-check-label">
               <input class="form-check-input leaderCheckbox" type="checkbox" id="mariaCheckbox" value="maria"> Maria</input>
@@ -95,24 +137,39 @@
             </label>
           </div>
 
-          <div class="mt-lg"><h4>Schedule</h4></div>
-          <div class="form-group row">
-            <label for="monday" class="col-sm-2 col-form-label">Password</label>
-            <div class="col-sm-10">
-              <input type="password" class="form-control" id="monday" placeholder="Password">
-            </div>
-          </div>
+          <!-- Preferred Times -->
+          <div class=" row mt-lg mon-thurs"></div> <!-- ./row -->
+          <div class=" row mt-lg fri-sun"></div> <!-- ./row -->
+
         </form>
 
-        <button class="btn btn-success mt-sm submit">Submit</button>
+        <span>
+          <button class="btn btn-success mt-sm" id="submitNewUser">Submit</button>
+          <button class="btn btn-danger cancel mt-sm" style="margin-left: 10px">Cancel</button>
+        </span>
     </div>
+    </div> <!-- ./user-list -->
 
-    <div class="mt-lg" id="submitResults" style="display: none">
-      <span><h3>Name:</h3><h5 id="name"></h5></span>
-      <span><h3>Member:</h3><h5 id="member"></h5></span>
-      <span><h3>Leader:</h3><h5 id="leader"></h5></span>
-      <span><h3>Leaders:</h3><h5 id="leaders"></h5></span>
-
+    <div class="container schedule">
+      <table class="table schedule-table" id="scheduleTable">
+        <thead>
+          <tr>
+            <th style="width: 30%">Time Block</th>
+            <th style="width: 10%">Monday</th>
+            <th style="width: 10%">Tuesday</th>
+            <th style="width: 10%">Wednesday</th>
+            <th style="width: 10%">Thursday</th>
+            <th style="width: 10%">Friday</th>
+            <th style="width: 10%">Saturday</th>
+            <th style="width: 10%">Sunday</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- This gets filled with users w/ JS -->
+        </tbody>
+        <tfoot>
+        </tfoot>
+      </table>
     </div>
   </body>
 
@@ -121,7 +178,8 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
 <script src="js/smoothScroll.js"></script>
-<script src="js/demo.js"></script>
+<script src="js/users.js"></script>
+<script src="js/schedule.js"></script>
 
 </body>
 </html>

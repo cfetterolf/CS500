@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create New Group</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
+
+  <!-- CDN: Bootstrap, jQuery -->
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js" defer></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" defer></script>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="newGroupScript.js"></script>
+
+</head>
+<body>
+  <!--INSERT HTML HERE-->
+
+<div class="container"> <!--TITLE-->
+  <h1>Create a New Group</h1>
+</div><!-- /.container -->
+
+<div class="container">
+
+  <h3>Form Input</h3>
+  <form id="newGroupForm" class="form" action="newGroupScript.php" method="post">
+  <!--form class="form" action="/action_page.php"-->
+
+    <div class="container">
+      <div class="form-group"> <!--NAME-->
+        <div class="col-sm-8">
+          <label for="groupNameIn"> <h4>Group Name</h4> </label>
+          <input id="groupNameIn" class="form-control input-group-sm reg_name"
+          type="text" name="groupNameIn" title="Enter group name"
+          placeholder="Group Name" required>
+        </div>
+        <div class="col-sm-4">
+          <label for="schoolSemYearIn"> <h4>Year/Semester</h4> </label>
+          <input id="schoolSemYearIn" class="form-control input-group-sm reg_name"
+          type="text" name="schoolSemYearIn" title="Enter time range name"
+          placeholder="e.g. SY17-18; F17" required>
+        </div>
+      </div><!--/form-group-->
+
+      <!--ADD ACCOUNT ADMIN-->
+      <!--div class="form-group">
+        <div class="col-sm-12">
+          <label><b>Add Account Admin</b></label>
+          <input id="addAccountAdminEmail" class="form-control" type="email"
+          placeholder="Enter Email" name="addAccountAdminEmail">
+        </div>
+
+      </div--><!--/form-group-->
+
+      <!--TIME BLOCKS-->
+      <!--creds: http://formvalidation.io/examples/adding-dynamic-field/-->
+      <div id="timeGroupInput" class="form-group"> <!--NAME-->
+        <label for="timeGroupInput" class="control-label col-lg-12">
+          <h4>Time Blocks</h4>
+        </label>
+
+      <div class="container"> <!--START TIME-->
+        <div class="col-xs-4">
+          <label for="startTime" class="col-2 col-form-label">Start</label>
+          <div class="col-2">
+            <input class="form-control" type="time" value="--:--:--"
+            name="startTime" id="startTime">
+          </div>
+        </div>
+
+        <div class="col-xs-4"> <!--END TIME-->
+          <label for="endTime" class="col-2 col-form-label">End</label>
+          <div class="col-2">
+            <input class="form-control" type="time" value="--:--:--"
+            name="startTime" id="endTime">
+          </div>
+        </div>
+
+        <div class="col-xs-4"> <!--SELECT: DAY-->
+          <label for="day" class="col-2">Day</label>
+          <select class="form-control col-2" id="day" name="startTime">
+            <option selected>Choose...</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+          </select>
+        </div>
+      </div>
+
+      </div><!--/form-group-->
+
+      <!-- The template for adding new field -->
+      <!--div class="form-group hide" id="timeSlotTemplate">
+
+          <div class="col-xs-4 col-xs-offset-1">
+              <input type="text" class="form-control" name="startTime"
+              placeholder="Start Time e.g. 1:00PM" />
+          </div>
+          <div class="col-xs-4">
+              <input type="text" class="form-control" name="endTime"
+              placeholder="End Time e.g. 2:00PM" />
+          </div>
+          <div class="col-xs-2">
+              <input type="text" class="form-control" name="day" placeholder="Day" />
+          </div>
+          <div class="col-xs-1">
+              <button type="button" class="btn btn-default removeButton">
+                <i class="fa fa-minus"></i></button>
+          </div>
+      </div-->
+
+      <div class="form-group"> <!--SUBMIT, CANCEL-->
+        <div class="col-sm-6 clearfix">
+          <button type="button" class="btn btn-sm btn-primary btn-block"
+          onclick= 'createNewGroup()'>Create Group</button>
+        </div>
+        <!--div class="col-sm-2">
+          <button class="btn btn-sm btn-primary cancelbtn btn-block" type="button">Cancel</button>
+        </div-->
+      </div>
+    </div>
+  </form>
+</div> <!-- /container -->
+
+<div class="container"> <!--New Group Form Output (JS)-->
+  <div> <!--TITLE-->
+    <h3>Form Output (JS)</h3>
+    <p id="newGroupSubmitConfirm"> </p>
+  </div>
+
+  <div id="newGroupFormOutput" class="container">
+    <h4 id="groupTitleOut"></h4>
+    <h4>Selected Time Blocks</h4>
+    <div id="timeBlockOutputSample">Time Blocks Output Here</div>
+  </div>
+</div>
+
+<div class="container"> <!--New Group Form Output (PHP)-->
+  <div> <!--TITLE-->
+    <h3>Form Output (PHP)</h3>
+    <p id="newGroupSubmitConfirmPHP"> </p>
+  </div>
+
+  <div id="newGroupFormOutputPHP" class="container">
+    <h4 id="groupTitleOutPHP">
+      <?php echo htmlspecialchars($_POST['groupNameIn']); ?>
+      <?php echo htmlspecialchars($_POST['schoolSemYearIn']); ?>
+    </h4>
+    <h4>Selected Time Blocks</h4>
+    <div id="timeBlockOutputSamplePHP">Time Blocks Output Here</div>
+  </div>
+</div>
+
+</body>
+</html>

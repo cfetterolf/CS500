@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>First Form</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
+
+  <!-- CDN: Bootstrap, jQuery -->
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js" defer></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" defer></script>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="myScript.js"></script>
+
+</head>
+<body>
+  <!--INSERT HTML HERE-->
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">First Form</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+
+<div class="container"> <!--FORM TITLE-->
+
+  <div class="form-title">
+    <h1>First Form</h1>
+    <p class="lead">This is my first form.</p>
+  </div>
+
+</div><!-- /.container -->
+
+
+<div class="container">
+
+  <form class="form"> <!--FORM-->
+
+    <!--h3 class="form-signin-heading">Input Information Here</h3-->
+
+    <div class="form-group">
+      <h4>Personal Information</h4>
+      <label for="name-input" >Name</label>
+      <input type="text" id="name-input" class="form-control" placeholder="First Last" required autofocus>
+
+      <!--div class="row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="First name">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Last name">
+        </div>
+      </div-->
+
+      <h5></h5>
+      <label for="email" >Email Address</label>
+      <input type="email" id="email" class="form-control" placeholder="email@middlebury.edu" required autofocus>
+
+    </div>
+
+
+    <div class="form-group">
+      <h4>Type of Member</h4>
+
+      <div class="form-check"> <!--MONDAY-->
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" id="member-input">
+          Member
+        </label>
+      </div>
+
+      <div class="form-check"> <!--MONDAY-->
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" id="leader-input">
+          Leader
+        </label>
+      </div>
+
+      <!--div class="checkbox">
+        <label>
+          <input type="checkbox" value="member"> Member
+          <input type="checkbox" value="leader"> Leader
+        </label>
+      </div-->
+
+
+    </div>
+
+    <div class="form-group">
+      <label for="avail" class="sr-only">Availability</label>
+
+      <h4> Availability </h4>
+
+      <div class="form-check"> <!--MONDAY-->
+        <label class="form-check-label">
+          <input id="avail_M" class="form-check-input" type="checkbox" value="Monday">
+          Monday
+        </label>
+      </div>
+
+      <div class="form-check"> <!--TUESDAY-->
+        <label class="form-check-label">
+          <input id="avail_Tu" class="form-check-input" type="checkbox" value="Tuesday">
+          Tuesday
+        </label>
+      </div>
+
+      <div class="form-check"> <!--WEDNESDAY-->
+        <label class="form-check-label">
+          <input id="avail_W" class="form-check-input" type="checkbox" value="Wednesday">
+          Wednesday
+        </label>
+      </div>
+
+      <div class="form-check"> <!--THURSDAY-->
+        <label class="form-check-label">
+          <input id="avail_Th" class="form-check-input" type="checkbox" value="Thursday">
+          Thursday
+        </label>
+      </div>
+
+      <div class="form-check"> <!--FRIDAY-->
+        <label class="form-check-label">
+          <input id="avail_F" class="form-check-input" type="checkbox" value="Friday">
+          Friday
+        </label>
+      </div>
+
+      <!--label>
+        <input type="checkbox" value="avail_M"> Monday
+        <input type="checkbox" value="avail_Tu"> Tuesday
+        <input type="checkbox" value="avail_W"> Wednesday
+        <input type="checkbox" value="avail_Th"> Thursday
+        <input type="checkbox" value="avail_F"> Friday
+      </label-->
+    </div>
+
+    <button class="btn btn-sm btn-primary btn-block" type="button"
+    onclick= 'submitFunction()'>
+    <!--button class="btn btn-sm btn-primary btn-block" type="button"
+    onclick= 'document.getElementById("submit_confirm").innerHTML =
+    "You submitted the form!"'-->
+      Sumbit
+    </button>
+    <p id="submit_confirm"> </p>
+
+  </form>
+
+</div> <!-- /container -->
+
+<div id="form-results" class="container"> <!-- container: RESULTS -->
+  <h3>Results</h3>
+
+  <h5>Name: </h5>
+  <p id="name_out"> </p>
+
+  <h5>Email: </h5>
+  <p id="email_out"></p>
+
+  <h5>Member: <p id="member_out"></p> </h5>
+  <h5>Leader: <p id="leader_out"></p> </h5>
+
+  <h5>Availability: </h5>
+  <p id="avail_out"></p>
+
+</div>
+
+</body>
+</html>

@@ -3,15 +3,7 @@ var name = "";
 var leaders = [];
 var member = true;
 var leader = false;
-var user_schedule = {
-  monday: {0: false, 1: false, 2: false},
-  tuesday: {0: false},
-  wednesday: {0: false, 1: false, 2: false},
-  thursday: {0: false, 1: false},
-  friday: {0: false, 1: false, 2: false},
-  saturday: {0: false, 1: false},
-  sunday: {0: false}
-};
+var user_schedule = {};
 
 /********** DUMMY VARS ************/
 var users = {
@@ -22,10 +14,9 @@ var users = {
     member: true,
     leader: false,
     schedule: {
-      monday: {0:"12-14", 1:"16-18", 2:"20-22"},
-      wednesday: {0:"12-14", 1:"16-18", 2:"20-22"},
-      friday: {0:"12-14", 1:"16-18", 2:"20-22"},
-      saturday: {0:"12-16", 1:"17-19"}
+      0: {day: "monday", start: 12, end: 14},
+      3: {day: "thursday", start: 16, end: 20},
+      4: {day: "friday", start: 11, end: 14}
     }
   },
   user_2: {
@@ -35,26 +26,43 @@ var users = {
     member: true,
     leader: true,
     schedule: {
-      monday: {0:"12-14", 1:"16-18", 2:"20-22"},
-      wednesday: {0:"12-14", 1:"16-18", 2:"20-22"},
-      friday: {0:"12-14", 1:"16-18", 2:"20-22"},
-      saturday: {0:"12-16", 1:"17-19"}
+      2: {day: "tuesday", start: 14, end: 18},
+      3: {day: "thursday", start: 16, end: 20},
+      4: {day: "friday", start: 11, end: 14},
+      5: {day: "friday", start: 16, end: 18},
+      6: {day: "sunday", start: 12, end: 15}
     }
   }
 };
 
 var time_blocks = {
-  monday: {0:"12-14", 1:"16-18", 2:"20-22"},
-  tuesday: {0:"14-18"},
-  wednesday: {0:"12-14", 1:"16-18", 2:"20-22"},
-  thursday: {0:"10-12", 1:"18-20"},
-  friday: {0:"12-14", 1:"16-18", 2:"20-22"},
-  saturday: {0:"12-16", 1:"17-19"},
-  sunday: {0:"10-14"}
+  0: {day: "monday", start: 12, end: 14},
+  1: {day: "monday", start: 16, end: 20},
+  2: {day: "tuesday", start: 14, end: 18},
+  3: {day: "thursday", start: 16, end: 20},
+  4: {day: "friday", start: 11, end: 14},
+  5: {day: "friday", start: 16, end: 18},
+  6: {day: "sunday", start: 12, end: 15}
 }
 
 /********** ./DUMMY VARS ************/
 
+
+function testPHP() {
+  alert('sent')
+  var json = '{"firstkey":"firstvalue","secondkey":"secondvalue"}';
+      $.ajax({ type: 'POST', url: 'php/test.php', data: {json: json}, success : function(data){
+          alert(data);
+      }});
+}
+
+// $('#testPHP').click(function() {
+//   alert('sent')
+//   var json = '{"firstkey":"firstvalue","secondkey":"secondvalue"}';
+//   $.ajax({ type: 'POST', url: 'php/test.php', data: {json: json}, success : function(data){
+//       alert(data);
+//   }});
+// })
 
 $(document).ready(function(){
   setUserTable(users);
@@ -67,31 +75,15 @@ $(document).ready(function(){
 
 function displayScheduleData() {
 
-  var i = 0;
-  for (var key in time_blocks) {
-
-    var day_blocks = time_blocks[key];
-    var day_html = '<div class="col col-3" id="' + key + '"><h5>'+ (key.charAt(0).toUpperCase() + key.slice(1)) +'</h5>';
-
-    for(var i in day_blocks) {
-      var block = day_blocks[i];
-      day_html += '<div class="form-check"><label class="form-check-label"><input class="form-check-input timeCheckbox" type="checkbox" data-block="' + i +'">' + block + '</input></label></div>';
-    }
-
-    if(i < 4) {
-      $('.mon-thurs').html( $('.mon-thurs').html() + day_html );
-    } else if (i < 7) {
-      $('.fri-sun').html( $('.fri-sun').html() + day_html );
-    }
-
-    i++;
+  for (var id in time_blocks) {
+    var block = time_blocks[id];
+    var day = block['day'];
+    var start = block['start'];
+    var end = block['end'];
+    //console.log(block);
+    var day_col = document.getElementById(day);
+    day_col.innerHTML += '<div class="form-check"><label class="form-check-label"><input class="form-check-input timeCheckbox" type="checkbox" data-block-id="' + id +'">' + start + '-' + end + '</input></label></div>';
   }
-
-  // for (var i = 0; i < arrReportscheckBoxItems.length; i++) {
-  //     reportscheckBoxhtml += '<label style="font-weight: 600; color: #00467f !important;"><input type="checkbox" value=' + arrReportscheckBoxItems[i] + '>' + arrReportscheckBoxItems[i] + '</label>&nbsp;';
-  // }
-  // $('#ReportRow > .col-md-12').html(reportscheckBoxhtml);
-
 }
 
 function handleUserList() {
@@ -105,7 +97,6 @@ function handleUserList() {
   // Click to add new user
   $("#addUserButton").click(function (event) {
     $("#addUserForm").show();
-
   });
 
 }
@@ -138,12 +129,12 @@ function handleUserInfo() {
 
   // select times free
   $(".timeCheckbox").click(function (event) {
-    var day = $(this).parent().parent().parent().attr('id');
-    var data_block = $(this).attr("data-block");
+    var id = $(this).attr("data-block-id");
     if ($(this).is(":checked")) {
-      user_schedule[day][data_block] = true;
+      time_blocks[id];
+      user_schedule[id] = {day: time_blocks[id]['day'], start: time_blocks[id]['start'], end: time_blocks[id]['end']};
     } else {
-      user_schedule[day][data_block] = false;
+      delete user_schedule[id];
     }
   });
 
@@ -217,15 +208,7 @@ function updateUserTable(user) {
 }
 
 function resetUserSchedule() {
-  user_schedule = {
-    monday: {0: false, 1: false, 2: false},
-    tuesday: {0: false},
-    wednesday: {0: false, 1: false, 2: false},
-    thursday: {0: false, 1: false},
-    friday: {0: false, 1: false, 2: false},
-    saturday: {0: false, 1: false},
-    sunday: {0: false}
-  };
+  user_schedule = {};
 }
 
 function showUserList() {

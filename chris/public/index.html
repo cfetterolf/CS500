@@ -87,6 +87,13 @@
           </tfoot>
         </table>
 
+        <div>
+          <span>
+            <button class="btn btn-success mt-sm" onclick="testPHP()" id="testPHP">Send users to server!</button>
+          </span>
+          <p id="status"></p>
+        </div>
+
       </div>
 
       <div class="jumbotron mt-lg" id="addUserForm">
@@ -138,8 +145,18 @@
           </div>
 
           <!-- Preferred Times -->
-          <div class=" row mt-lg mon-thurs"></div> <!-- ./row -->
-          <div class=" row mt-lg fri-sun"></div> <!-- ./row -->
+          <div class=" row mt-lg mon-thurs">
+            <div class="col col-3" id="monday"><h5>Monday</h5></div>
+            <div class="col col-3" id="tuesday"><h5>Tuesday</h5></div>
+            <div class="col col-3" id="wednesday"><h5>Wednesday</h5></div>
+            <div class="col col-3" id="thursday"><h5>Thursday</h5></div>
+          </div> <!-- ./row -->
+
+          <div class=" row mt-lg fri-sun">
+            <div class="col col-3" id="friday"><h5>Friday</h5></div>
+            <div class="col col-3" id="saturday"><h5>Saturday</h5></div>
+            <div class="col col-3" id="sunday"><h5>Sunday</h5></div>
+          </div> <!-- ./row -->
 
         </form>
 

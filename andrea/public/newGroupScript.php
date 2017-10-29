@@ -21,6 +21,12 @@ echo "Group Name: " . $groupName . "<br>";
 echo "Time Period: " . $schoolSemYear . "<br>";
 
 /*
+function helloWorldPY() {
+  print('Hello, world!')
+}
+*/
+
+/*
 print == echo
 BUT print is an expression, returns 1, echo does not return anything
 

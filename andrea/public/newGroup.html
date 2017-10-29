@@ -47,16 +47,6 @@
         </div>
       </div><!--/form-group-->
 
-      <!--ADD ACCOUNT ADMIN-->
-      <!--div class="form-group">
-        <div class="col-sm-12">
-          <label><b>Add Account Admin</b></label>
-          <input id="addAccountAdminEmail" class="form-control" type="email"
-          placeholder="Enter Email" name="addAccountAdminEmail">
-        </div>
-
-      </div--><!--/form-group-->
-
       <!--TIME BLOCKS-->
       <!--creds: http://formvalidation.io/examples/adding-dynamic-field/-->
       <div id="timeGroupInput" class="form-group"> <!--NAME-->
@@ -64,24 +54,101 @@
           <h4>Time Blocks</h4>
         </label>
 
-      <div class="container"> <!--START TIME-->
+        <div class="container">  <!--TIME BLOCKS TABLE: Container -->
+        <table id="timeBlockTable" class="table table-striped"> <!--TIME BLOCKS TABLE -->
+          <thead>
+              <tr>
+                  <th>#</th>
+                  <th>Start</th>
+                  <th>End</th>
+                  <th>Day</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+              <!--tr>
+                  <td>1</td>
+                  <td>John</td>
+                  <td>Carter</td>
+                  <td>johncarter@mail.com</td>
+                  <td>
+                    <button type="button" class="close" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </td>
+              </tr>
+              <tr>
+                  <td>2</td>
+                  <td>Peter</td>
+                  <td>Parker</td>
+                  <td>peterparker@mail.com</td>
+                  <td>
+                    <button type="button" class="close" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </td>
+              </tr-->
+              <tr id="rowTBID_0">
+                  <td>0</td>
+                  <td>
+                    <input class="form-control startTime" type="time" value="--:--:--"
+                    name="startTime">
+                  </td>
+                  <td>
+                    <input class="form-control endTime" type="time" value="--:--:--"
+                    name="startTime">
+                  </td>
+                  <td>
+                    <select class="form-control col-2 day" name="day">
+                      <option selected>Choose...</option>
+                      <option value="Monday">Monday</option>
+                      <option value="Tuesday">Tuesday</option>
+                      <option value="Wednesday">Wednesday</option>
+                      <option value="Thursday">Thursday</option>
+                      <option value="Friday">Friday</option>
+                      <option value="Saturday">Saturday</option>
+                      <option value="Sunday">Sunday</option>
+                    </select>
+                  </td>
+                  <td>
+                    <button type="button" class="close" aria-label="Close"
+                    onclick="deleteRowTB(this)">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      </div>
+
+      <div class="col-sm-2 clearfix"> <!--ADD NEW TB BUTTON-->
+        <button id="addNewTBRowBut"type="button" onclick= 'addNewTBRow()'
+        class="btn btn-sm btn-primary btn-block">
+          Add New Time Block
+        </button>
+      </div>
+
+      <!--START TIME>
+      <div class="container">
         <div class="col-xs-4">
           <label for="startTime" class="col-2 col-form-label">Start</label>
           <div class="col-2">
             <input class="form-control" type="time" value="--:--:--"
             name="startTime" id="startTime">
           </div>
-        </div>
+        </div-->
 
-        <div class="col-xs-4"> <!--END TIME-->
+        <!--END TIME>
+        <div class="col-xs-4">
           <label for="endTime" class="col-2 col-form-label">End</label>
           <div class="col-2">
             <input class="form-control" type="time" value="--:--:--"
             name="startTime" id="endTime">
           </div>
-        </div>
+        </div-->
 
-        <div class="col-xs-4"> <!--SELECT: DAY-->
+        <!--SELECT: DAY>
+        <div class="col-xs-4">
           <label for="day" class="col-2">Day</label>
           <select class="form-control col-2" id="day" name="startTime">
             <option selected>Choose...</option>
@@ -92,7 +159,7 @@
             <option value="Friday">Friday</option>
             <option value="Saturday">Saturday</option>
             <option value="Sunday">Sunday</option>
-          </select>
+          </select-->
         </div>
       </div>
 
@@ -118,8 +185,8 @@
           </div>
       </div-->
 
-      <div class="form-group"> <!--SUBMIT, CANCEL-->
-        <div class="col-sm-6 clearfix">
+      <div class="form-group container"> <!--SUBMIT, CANCEL-->
+        <div class="col-sm-12 clearfix">
           <button type="button" class="btn btn-sm btn-primary btn-block"
           onclick= 'createNewGroup()'>Create Group</button>
         </div>

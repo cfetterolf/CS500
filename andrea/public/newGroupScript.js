@@ -3,6 +3,8 @@
 //Notes
 // no "-" in js
 // use camel case e.g. myName, emailAd
+//conole.log(INSERT);     --> have console open on opera/web
+//alert();
 
 //SETTING VARIABLES: GROUP NAME + TIME
 var groupName, schoolSemYear;
@@ -10,14 +12,7 @@ groupName = "";
 schoolSemYear = "";
 
 //SETTING VARIABLES: TIME SLOTS
-var timeSlotIndex = 1;   //starting time slot ID for each group
-
-// TIme Slots : Hard Coded Variables
-var timeSlotIDHD, startTimeHC, endTimeHC, dayHC;
-timeSlotIDHD = timeSlotIndex;
-startTimeHC = "";
-endTimeHC = "";
-dayHC = "";
+var lastIndexTB = 0;   //starting time slot ID for each group
 
 // Object Constructor + Functions
 function TimeSlot(timeSlotID, startTime, endTime, day) {
@@ -29,7 +24,6 @@ function TimeSlot(timeSlotID, startTime, endTime, day) {
   this.printTimeSlot = function() {
     return timeSlotID + ": " + day + " " + start + " - " + end;
   };
-  timeSlotIndex++;   //CAN I DO THIS????
 }
 
 //SETTING VARIABLES: ACCOUNT ADMIN
@@ -53,6 +47,13 @@ var timeSlotEx2 = {
                   day:"Monday"
                 };
 // timeSlotEx1 <-- ID is assigned
+
+// TIme Slots : Hard Coded Variables
+var timeSlotIDHD, startTimeHC, endTimeHC, dayHC;
+timeSlotIDHD = timeSlotIndex;
+startTimeHC = "";
+endTimeHC = "";
+dayHC = "";
 **/
 
 // Create Objects fr Constructor
@@ -63,6 +64,55 @@ var timeSlotEx2 = {
 //timeSlotEx3.start;
 //timeSlotEx3["start"];
 //timeSlotEx3.printTimeSlot();
+
+// TB: EMPTY ROW
+
+// TIME BLOCK TABLE
+function addNewTBRow() {
+  //Adds new row to time block table with empty fields
+  //alert("Added New Row!");
+  lastIndexTB++;
+  $('#timeBlockTable tr:last').after(
+    //HOW TO MULTILINE STRING????
+    '<tr id="rowTBID_' + lastIndexTB + '"> \
+        <td>' + lastIndexTB + '</td> \
+        <td> \
+          <input class="form-control startTime" type="time" value="--:--:--" \
+          name="startTime"> \
+        </td> \
+        <td> \
+          <input class="form-control endTime" type="time" value="--:--:--" \
+          name="startTime"> \
+        </td> \
+        <td> \
+          <select class="form-control col-2 day" name="day"> \
+            <option selected>Choose...</option> \
+            <option value="Monday">Monday</option> \
+            <option value="Tuesday">Tuesday</option> \
+            <option value="Wednesday">Wednesday</option> \
+            <option value="Thursday">Thursday</option> \
+            <option value="Friday">Friday</option> \
+            <option value="Saturday">Saturday</option> \
+            <option value="Sunday">Sunday</option> \
+          </select> \
+        </td> \
+        <td> \
+          <button type="button" class="close" aria-label="Close" \
+          onclick="deleteRowTB(this)"> \
+            <span aria-hidden="true">&times;</span> \
+          </button> \
+        </td> \
+    </tr>');
+}
+
+// Delete Time Block Row
+function deleteRowTB(o) {
+  lastIndexTB--;
+  // NEED TO FIX NUMBERING OF PREV ROWS!!!
+  // https://stackoverflow.com/questions/11673322/numbering-dynamic-table-rows
+  var p=o.parentNode.parentNode;
+  p.parentNode.removeChild(p);
+}
 
 function createNewGroup() {
   //alert("Form submitted!");
@@ -96,13 +146,6 @@ function createNewGroup() {
 
 }
 
-/**
-function pushToArray(itemID) {
-  if (document.getElementById(itemID).checked) {
-    avail.push(document.getElementById(itemID).value);
-  }
-}
-**/
 
 /**
 $(document).ready(function() {

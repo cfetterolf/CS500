@@ -1,3 +1,6 @@
+# munkres -- package for finding optimal cost matrix
+from munkres import Munkres, print_matrix
+
 """
 ------------------------------
         DUMMY VARIABLES
@@ -22,6 +25,18 @@ members = {
         "email": "chris@gmail",
         "leader_preferences": [10], # IDs of preferred leader groups
     },
+    3: {
+        "first_name": "Bob",
+        "last_name": "Bobby",
+        "email": "chris@gmail",
+        "leader_preferences": [10], # IDs of preferred leader groups
+    },
+    4: {
+        "first_name": "Jane",
+        "last_name": "Ratched",
+        "email": "chris@gmail",
+        "leader_preferences": [11], # IDs of preferred leader groups
+    },
 }
 
 leader_groups = {
@@ -41,22 +56,22 @@ time_blocks = {
         "day": "Monday",
         "start": 14,
         "end": 18,
-        "members_available": [0, 1, 2], # IDs of members available
-        "leaders_available": [11, 12],    # IDs of leaders available
+        "members_available": [0, 1, 2, 3, 4], # IDs of members available
+        "leaders_available": [10, 11, 12],    # IDs of leaders available
     },
     8: {
         "day": "Sunday",
         "start": 12,
         "end": 14,
-        "members_available": [0, 2],
-        "leaders_available": [12],
+        "members_available": [0, 2, 3, 4],
+        "leaders_available": [12, 11],
     },
     9: {
         "day": "Thursday",
         "start": 10,
         "end": 12,
-        "members_available": [1],
-        "leaders_available": [10, 12],
+        "members_available": [1, 2, 4],
+        "leaders_available": [10],
     }
 }
 
@@ -129,12 +144,34 @@ def makeIdMap(id_dict):
         i+=1
     return id_map
 
+def invert(matrix):
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            matrix[i][j] = matrix[i][j] * -1
+
+
+
+
 #######################################################
 
 def main():
     hungarian_input_dict = convertToSquareMatrix(members, time_blocks)
     matrix = hungarian_input_dict["ct_martix"]
+    member_matrix = hungarian_input_dict["mem_id_matrix"]
+    print(matrix)
+
     #from here, run hungarian algorithm with matrix (possible negate)
-    
+    invert(matrix)
+    m = Munkres()
+    indexes = m.compute(matrix)
+    invert(matrix)
+    print_matrix(matrix, msg='Highest cost through this matrix:')
+    total = 0
+    for row, column in indexes:
+        value = member_matrix[row][column]
+        total += len(value)
+        print('\nTime block %d, Leader Group %d matches members:' % (row, column))
+        print(value)
+    print('Total members matched: %d' % total)
 
 main()

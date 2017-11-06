@@ -148,7 +148,6 @@ hungarian_input_dict = {}
 """
 Converts a member object and leader object to a square matrix that can
 be used in a Hungarian algorithm
-
 input: member, time block and leader group dictionaries
     (key, value pairings for each)
 output: dictionary containing:
@@ -231,7 +230,6 @@ def invert(matrix):
 Helper Function: PRINT
     prints the input of the "convertToSquareMatrix" function
     i.e. members, time_blocks, leader_groups
-
 """
 def printConvertSqMtrxInput(members, time_blocks, leader_groups):
 
@@ -315,6 +313,7 @@ def printConvertSqMtrxInput(members, time_blocks, leader_groups):
         #     print leader_groups["lg_id"]
 
 
+<<<<<<< HEAD
 def checkMem(members, time_blocks, leader_groups,
              matchedIndices, hung_input_dict):
 
@@ -388,6 +387,14 @@ def checkMem(members, time_blocks, leader_groups,
     print
 
 
+=======
+"""
+Helper Function: PRINTS:
+    column titles = time block IDs
+    row titles = leader group IDs
+    1st matrix: number of matching members
+    2nd matrix: array of IDs of matching members
+>>>>>>> 184abd6741fda6c8efb05811a74f45a4913ea2da
 """
     Helper Print Function: lg x tb matrix
 

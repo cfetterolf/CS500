@@ -86,6 +86,18 @@ members_t2 = {
         "email": "chris@gmail",
         "leader_preferences": [10], # IDs of preferred leader groups
     },
+    3: {
+        "first_name": "Bob",
+        "last_name": "Bobby",
+        "email": "chris@gmail",
+        "leader_preferences": [10], # IDs of preferred leader groups
+    },
+    4: {
+        "first_name": "Jane",
+        "last_name": "Ratched",
+        "email": "chris@gmail",
+        "leader_preferences": [11], # IDs of preferred leader groups
+    },
 }
 
 leader_groups_t2 = {
@@ -105,22 +117,22 @@ time_blocks_t2 = {
         "day": "Monday",
         "start": 14,
         "end": 18,
-        "members_available": [0, 1, 2], # IDs of members available
-        "leaders_available": [11, 12],    # IDs of leaders available
+        "members_available": [0, 1, 2, 3, 4], # IDs of members available
+        "leaders_available": [10, 11, 12],    # IDs of leaders available
     },
     8: {
         "day": "Sunday",
         "start": 12,
         "end": 14,
-        "members_available": [0, 2],
-        "leaders_available": [12],
+        "members_available": [0, 2, 3, 4],
+        "leaders_available": [12, 11],
     },
     9: {
         "day": "Thursday",
         "start": 10,
         "end": 12,
-        "members_available": [1],
-        "leaders_available": [10, 12],
+        "members_available": [1, 2, 4],
+        "leaders_available": [10],
     }
 }
 
@@ -223,47 +235,47 @@ Helper Function: PRINT
 """
 def printConvertSqMtrxInput(members, time_blocks, leader_groups):
 
-    # MEMBER
-    # Title
-    print '{:10}'.format('mem id'),
-    print '{:10}'.format('f name'),
-    print '{:15}'.format('tb pref'),
-    print '{:16}'.format('lg pref: [user id]'),
-    print
-    # Set Vars: Check Hung Alg Output is in Pref
-    tb_pref_check = []
-    lg_pref_check = []
-
-    # Entries
-    for mem in members:
-        print '{:10}'.format(str(mem)),
-        # print '{:6}'.format(tb_id),
-        print '{:10}'.format(members[mem]["first_name"]),
-
-        # prints tb pref
-        for tb_id in time_blocks:
-            if mem in time_blocks[tb_id]["members_available"]:
-                print str(tb_id) + ',',
-                tb_pref_check.append(tb_id)
-        print '{:9}'.format(''),
-
-        # prints tb hung alg output
-
-
-        # prints lg pref: [user id]
-        same_line = False
-        for lg_id in members[mem]["leader_preferences"]:
-            lg_pref_check.append(lg_id)
-            if same_line == True:
-                print '{:37}'.format(''),
-            print '{:8}'.format(str(lg_id) + ': '),
-            print '{:8}'.format(str(leader_groups[lg_id]["leaders"])),
-            print
-            same_line = True
-
-        # prints lg hung alg output
-
-    print
+    # # MEMBER
+    # # Title
+    # print '{:10}'.format('mem id'),
+    # print '{:10}'.format('f name'),
+    # print '{:15}'.format('tb pref'),
+    # print '{:16}'.format('lg pref: [user id]'),
+    # print
+    # # Set Vars: Check Hung Alg Output is in Pref
+    # tb_pref_check = []
+    # lg_pref_check = []
+    #
+    # # Entries
+    # for mem in members:
+    #     print '{:10}'.format(str(mem)),
+    #     # print '{:6}'.format(tb_id),
+    #     print '{:10}'.format(members[mem]["first_name"]),
+    #
+    #     # prints tb pref
+    #     for tb_id in time_blocks:
+    #         if mem in time_blocks[tb_id]["members_available"]:
+    #             print str(tb_id) + ',',
+    #             tb_pref_check.append(tb_id)
+    #     print '{:9}'.format(''),
+    #
+    #     # prints tb hung alg output
+    #
+    #
+    #     # prints lg pref: [user id]
+    #     same_line = False
+    #     for lg_id in members[mem]["leader_preferences"]:
+    #         lg_pref_check.append(lg_id)
+    #         if same_line == True:
+    #             print '{:37}'.format(''),
+    #         print '{:8}'.format(str(lg_id) + ': '),
+    #         print '{:8}'.format(str(leader_groups[lg_id]["leaders"])),
+    #         print
+    #         same_line = True
+    #
+    #     # prints lg hung alg output
+    #
+    # print
 
     # LEADER GROUP
     # Title
@@ -303,90 +315,223 @@ def printConvertSqMtrxInput(members, time_blocks, leader_groups):
         #     print leader_groups["lg_id"]
 
 
-"""
-Helper Function: PRINTS:
-    column titles = time block IDs
-    row titles = leader group IDs
+def checkMem(members, time_blocks, leader_groups,
+             matchedIndices, hung_input_dict):
 
-    1st matrix: number of matching members
-    2nd matrix: array of IDs of matching members
-"""
-def printHungArrayInput(hung_input_dict):
-    # for tb_id in hung_input_dict["tb_map"]:
-    #     print '{:4}'.format(tb_id),
+    # SET VARIABLES
+    lg_map = hung_input_dict["lg_map"]
+    tb_map = hung_input_dict["tb_map"]
 
-    # print("HELPER PRINT FUNCTION")
+    # Matched TB-LG (by Hung Alg) by ID
+    matched_ID = []
+    for tb,lg in matchedIndices:
+        matched_ID.append((tb_map[tb],lg_map[lg]))
+
+    # print('Matched TB-LG id\'s: ')
+    # print(str(matched_tb_lg) + '\n')
+
+    # MEMBER
+    # Title
+    print 'mem id'.center(10),
+    print 'f name'.center(10),
+    print 'tb pref'.center(10),
+    # print 'lg pref: [user id]'.center(20),
+    print 'lg pref'.ljust(20),
+    print 'matched TB-LG'.center(15),
+    print
+
+
+    # Entries
+    for mem in members:
+        # Set Vars: Check Hung Alg Output is in Pref
+        tb_pref_check = []
+        lg_pref_check = []
+
+        # PRINT: MEM ID
+        print str(mem).center(10),
+        print str(members[mem]["first_name"]).center(10),
+
+        # prints tb pref
+        for tb_id in time_blocks:
+            if mem in time_blocks[tb_id]["members_available"]:
+                # print str(tb_id) + ',',
+                tb_pref_check.append(tb_id)
+        print str(tb_pref_check).center(10),
+
+        # prints lg pref: [user id]
+        # same_line = False
+        for lg_id in members[mem]["leader_preferences"]:
+            lg_pref_check.append(lg_id)
+            # PRINTS LG PREF
+            # print '{:8}'.format(str(lg_id) + ': '),
+            # print '{:8}'.format(str(leader_groups[lg_id]["leaders"])),
+            # print
+            # same_line = True
+        print str(lg_pref_check).ljust(20),
+
+        # print(str(tb_pref_check) + ', ' + str(lg_pref_check))
+
+        # prints matched TB-LG for mem
+        matched_combo = []
+        for tb,lg in matched_ID:
+            # CONT WORKING HEREEEEEE
+            print(str(tb) + ', ' + str(lg) + ':'),
+            if (tb in tb_pref_check) & (lg in lg_pref_check):
+                print("!"),
+                matched_combo.append((tb,lg))
+            else:
+                print("."),
+            # print(str(matched_combo)),
+            # print('. '),
+        print str(matched_combo).center(15),
+        print
+    print
+
+
+"""
+    Helper Print Function: lg x tb matrix
+
+    val_type options:
+        'num'            number of matched mems
+        'name_array'     Array of Names of Matching Members
+        'id_array'       Array of ID's of Matching Members
+"""
+def print1Matrix(matchedIndices, hung_input_dict, members, val_type):
+    # Set Variables
     ct_matrix = hung_input_dict["ct_martix"]
     mem_id_matrix = hung_input_dict["mem_id_matrix"]
-
-    print("Matrix: Number of Matching Members ")
-    # Print: Column Titles : Time Block IDs
-    tb_map = hung_input_dict["tb_map"]
-    for tb_id in tb_map:
-        print '{:6}'.format(tb_id),
-    print
-    print('--------' * len(tb_map))
-
-    # Print: 2D Array Insides + Row Titles: Leader Group ID
-    i = 0;
     lg_map = hung_input_dict["lg_map"]
-    for row in ct_matrix:
-        for col in row:
-            print '{:6}'.format(col),
-        print '   |  ',
-        print lg_map[i]
-        i+=1
-    print
+    tb_map = hung_input_dict["tb_map"]
+    matrix_len = len(ct_matrix);
+    col_size = matrix_len * 5;
+
     # -----------
 
-    print("Matrix: Array of ID's of Matching Members ")
-    # Print: Column Titles : Time Block IDs
-    for tb_id in tb_map:
-        print '{:6}'.format(tb_id),
+    # Print: Column Titles : Leader Group IDs
+    for lg_id in lg_map:
+        print str(lg_id).center(col_size),
     print
-    print('--------' * len(tb_map))
+    print ''.center(col_size, '-') * (matrix_len+1)
 
-    # Print: 2D Array Insides + Row Titles: Leader Group ID
-    i = 0;
-    for row in mem_id_matrix:
-        for col in row:
-            print '{:6}'.format(col),
+    temp_tb_index = 0;          # goes through the row (tb)
+    temp_lg_index = 0;          # goes through the col (lg)
+
+    for temp_tb_index in range(matrix_len):
+        # print('temp_tb_index: ' + str(temp_tb_index))
+        for temp_lg_index in range(matrix_len):
+            # print(str(temp_tb_index) + ', ' + str(temp_lg_index)),
+
+            # printVal PT1: print val in 2D array depending on chosen val_type:
+            if val_type == 'num':
+                printVal = ct_matrix[temp_tb_index][temp_lg_index]
+            elif val_type == 'name_array':
+                temp_mem_list = []
+                for user_id in mem_id_matrix[temp_tb_index][temp_lg_index]:
+                    temp_mem_list.append(members[user_id]["first_name"])
+                printVal = temp_mem_list
+            elif val_type == 'id_array':
+                printVal = mem_id_matrix[temp_tb_index][temp_lg_index]
+
+            # printVal PT2: adds ! if tb,lg are chosen by alg
+            if (temp_tb_index, temp_lg_index) in matchedIndices:
+                # printVal = '!' + str(ct_matrix[temp_tb_index][temp_lg_index]) + '!'
+                printVal = '!' + str(printVal) + '!'
+            # else:
+                # printVal = str(ct_matrix[temp_tb_index][temp_lg_index])
+
+            print(str(printVal).center(col_size)),
+            temp_lg_index += 1
+
+        # print: row titles
         print '   |  ',
-        print lg_map[i]
-        i+=1
-    print
+        print tb_map[temp_tb_index],
 
+        temp_tb_index += 1
+        print
+    print('\n')
+
+
+
+def printHungAlgOutput(matchedIndices, hung_input_dict, members, time_blocks, leader_groups):
+    # Output of Pre-processing Step
+    # fr hung_input_dict
+    ct_matrix = hung_input_dict["ct_martix"]
+    mem_id_matrix = hung_input_dict["mem_id_matrix"]
+    lg_map = hung_input_dict["lg_map"]
+    tb_map = hung_input_dict["tb_map"]
+    # print(ct_matrix)
+
+    print('Matched TB-LG Indices: ')
+    print(matchedIndices)
+
+    matched_tb_lg = []
+    for tb,lg in matchedIndices:
+        matched_tb_lg.append((tb_map[tb],lg_map[lg]))
+
+    print('Matched TB-LG id\'s: ')
+    print(str(matched_tb_lg) + '\n')
+
+    # Prints the member info: tb pref, lg pref and hung alg output
+    checkMem(members, time_blocks, leader_groups,
+                 matchedIndices, hung_input_dict)
+
+    # PRINTS 3 HELPER MATRICES (hung alg: input + matched output)
+    print("Matrix: Number of Matching Members ")
+    print1Matrix(matchedIndices, hung_input_dict, members, 'num')
+    print("Matrix: Array of Names of Matching Members ")
+    print1Matrix(matchedIndices, hung_input_dict, members, 'name_array')
+    # print("Matrix: Array of ID's of Matching Members ")
+    # print1Matrix(matchedIndices, hung_input_dict, members, 'id_array')
+
+
+
+
+
+def runFullandPrint(members, time_blocks, leader_groups):
+    """
+    Runs the pre-processing step and the hungarian algorithm
+    Also prints helper print functions in terminal
+    """
+
+    # PRE-PROCESSING STEP (prep for hung alg)
+    hungarian_input_dict = convertToSquareMatrix(members, time_blocks, leader_groups)
+    matrix = hungarian_input_dict["ct_martix"]
+    member_matrix = hungarian_input_dict["mem_id_matrix"]
+    # note: matrix == ct_matrix (key) in hungarian_input_dict output
+
+    # Helper Print Functions: Hungarian Alg 2D Array Input
+    # printConvertSqMtrxInput(members, time_blocks, leader_groups)
+
+    # RUN HUNG ALG W MATRIX (possible negate)
+    invert(matrix)
+    m = Munkres()
+    indexes = m.compute(matrix)    # indexes = indices of the max weight rows and cols
+    # print(indexes)
+    invert(matrix)
+    # print_matrix(matrix_t1, msg='Highest cost through this matrix:')
+    total = 0
+    for row, column in indexes:
+        value = member_matrix[row][column]
+        total += len(value)
+    #     print('\nTime block %d, Leader Group %d matches members:' % (row, column))
+    #     print(value)
+    # print('Total members matched: %d' % total)
+
+    printHungAlgOutput(indexes, hungarian_input_dict, members, time_blocks, leader_groups)
+
+    print('---------------------------------------------------------\n \n \n')
 
 #######################################################
 
 def main():
 
-    print("TRIAL: DUMMY VALUES 1")
-    hungarian_input_dict_t1 = convertToSquareMatrix(members_t1, time_blocks_t1, leader_groups_t1)
-    matrix_t1 = hungarian_input_dict_t1["ct_martix"]
-    member_matrix_t1 = hungarian_input_dict_t1["mem_id_matrix"]
-    # note: matrix == ct_matrix (key) in hungarian_input_dict output
-    print("")
-    printHungArrayInput(hungarian_input_dict_t1)
-    printConvertSqMtrxInput(members_t1, time_blocks_t1, leader_groups_t1)
-    # print(matrix_t1)
+    # DUMMY 1 ---------
+    print("TRIAL: DUMMY VALUES 1 \n")
+    runFullandPrint(members_t1, time_blocks_t1, leader_groups_t1)
 
-    # print(hungarian_input_dict)
-    # from here, run hungarian algorithm with matrix (possible negate)
+    # DUMMY 2 ---------
+    # print("TRIAL: DUMMY VALUES 2 \n")
+    # runFullandPrint(members_t2, time_blocks_t2, leader_groups_t2)
 
-    invert(matrix_t1)
-    m = Munkres()
-    indexes = m.compute(matrix_t1)    # indexes = indices of the max weight rows and cols
-    print(indexes)
-
-    invert(matrix_t1)
-    # print_matrix(matrix_t1, msg='Highest cost through this matrix:')
-    total = 0
-    for row, column in indexes:
-        value = member_matrix_t1[row][column]
-        total += len(value)
-        print('\nTime block %d, Leader Group %d matches members:' % (row, column))
-        print(value)
-    print('Total members matched: %d' % total)
 
 main()

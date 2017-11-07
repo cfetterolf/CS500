@@ -1,0 +1,111 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<!-- Page Content -->
+    <div class="container user-list">
+
+      <div class="row mt-lg">
+
+        <h2>Current Users</h2>
+
+        <table class="table table-striped user-table" id="userTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Member</th>
+              <th>Leader</th>
+              <th>Availability</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- This gets filled with users w/ JS -->
+          </tbody>
+          <tfoot>
+            <tr id="addUserRow">
+              <td><button class="btn btn-success" id="addUserButton">Add User</button></td><td /><td /><td />
+            </tr>
+          </tfoot>
+        </table>
+
+        <div>
+          <span>
+            <button class="btn btn-success mt-sm" onclick="runAlgorithm()" id="runAlgorithm">Get Optimal Schedule</button>
+          </span>
+          <p id="status"></p>
+        </div>
+
+      </div>
+
+      <div class="jumbotron mt-lg" id="addUserForm">
+        <h2>Add New User</h2>
+        <form class="mt-sm">
+          <!-- Name -->
+          <div class="mt-lg"><h4>User Information</h4></div>
+          <div class="form-group row">
+            <label for="nameInput" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="nameInput" placeholder="First and Last">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="emailInput" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="emailInput" placeholder="example@gmail.com">
+            </div>
+          </div>
+
+          <!-- Member/Leader -->
+          <div class="form-check form-check-inline active">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" id="memberCheckbox" value="option1" checked="checked"> Member</input>
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" id="leaderCheckbox" value="option2"> Leader</input>
+            </label>
+          </div>
+
+          <!-- Preferred Leaders -->
+          <div class="mt-lg"><h4>Preferred Leaders</h4></div>
+          <div class="form-check form-check-inline active mt-sm">
+            <label class="form-check-label">
+              <input class="form-check-input leaderCheckbox" type="checkbox" id="mariaCheckbox" value="maria"> Maria</input>
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input leaderCheckbox" type="checkbox" id="paulCheckbox" value="paul"> Paul</input>
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input leaderCheckbox" type="checkbox" id="sidCheckbox" value="sid"> Sid</input>
+            </label>
+          </div>
+
+          <!-- Preferred Times -->
+          <div class=" row mt-lg mon-thurs">
+            <div class="col col-3" id="monday"><h5>Monday</h5></div>
+            <div class="col col-3" id="tuesday"><h5>Tuesday</h5></div>
+            <div class="col col-3" id="wednesday"><h5>Wednesday</h5></div>
+            <div class="col col-3" id="thursday"><h5>Thursday</h5></div>
+          </div> <!-- ./row -->
+
+          <div class=" row mt-lg fri-sun">
+            <div class="col col-3" id="friday"><h5>Friday</h5></div>
+            <div class="col col-3" id="saturday"><h5>Saturday</h5></div>
+            <div class="col col-3" id="sunday"><h5>Sunday</h5></div>
+          </div> <!-- ./row -->
+
+        </form>
+
+        <span>
+          <button class="btn btn-success mt-sm" id="submitNewUser">Submit</button>
+          <button class="btn btn-danger cancel mt-sm" style="margin-left: 10px">Cancel</button>
+        </span>
+    </div>
+    </div> <!-- ./user-list -->
+
+{% load static %}<script src="{% static 'js/users.js' %}"></script>
+{% endblock %}

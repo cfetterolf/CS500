@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div class="container schedule">
+  <table class="table schedule-table" id="scheduleTable">
+    <thead>
+      <tr>
+        <th style="width: 30%">Time Block</th>
+        <th style="width: 10%">Monday</th>
+        <th style="width: 10%">Tuesday</th>
+        <th style="width: 10%">Wednesday</th>
+        <th style="width: 10%">Thursday</th>
+        <th style="width: 10%">Friday</th>
+        <th style="width: 10%">Saturday</th>
+        <th style="width: 10%">Sunday</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- This gets filled with users w/ JS -->
+    </tbody>
+    <tfoot>
+    </tfoot>
+  </table>
+</div>
+
+{% load static %}<script src="{% static 'js/schedule.js' %}"></script>
+{% endblock %}
+
+{% block footer %}
+<footer class="footer">
+  <div class="container">
+    <span class="text-muted"><a href="{% url 'index' %}">take me home</a></span>
+  </div>
+</footer>
+{% endblock %}

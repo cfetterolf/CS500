@@ -1,0 +1,34 @@
+body {
+
+}
+
+.navbar .navbar-brand {
+  margin-left: 50px;
+}
+
+.navbar .nav-item {
+  cursor: pointer;
+}
+
+.schedule {
+  
+}
+
+.mt-lg {
+  margin-top: 50px;
+}
+
+.mt-sm {
+  margin-top: 20px;
+}
+
+.hover-click {
+  cursor: pointer;
+}
+
+
+
+
+#addUserForm {
+  display: none;
+}

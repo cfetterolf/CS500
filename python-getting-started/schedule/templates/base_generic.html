@@ -1,0 +1,81 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  {% block title %}<title>Hungry Hippo</title>{% endblock %}
+  <meta name="description" content="Filler Description">
+  <meta name="author" content="Chris Fetterolf">
+
+  <!-- Icon -->
+  <link rel="icon" href="img/logo.png" type="image/png">
+
+  <!-- Open Graph - for social Media use -->
+  <meta prefix="og: http://ogp.me/ns#" property='og:title' content="Tagline" />
+  <meta prefix="og: http://ogp.me/ns#" property='og:image' content="http://media.domain.com/img/thumbnail.jpg" />
+  <meta prefix="og: http://ogp.me/ns#" property="og:description" content="2-3 sentences." />
+  <meta prefix="og: http://ogp.me/ns#" property="og:url" content="http://www.domain.com" />
+
+  <!-- FONTS -->
+  <script src="https://use.typekit.net/dru0rgp.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond:300,400,500,600,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Fresca" rel="stylesheet">
+
+  <!-- To use: font-family: 'Zilla Slab', serif; -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway:200,300,500,700|Zilla+Slab:200,300,400,500,600,700" rel="stylesheet">
+  <!-- <script src="Tooltip.js" type="text/javascript"></script> -->
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+  <!-- Add additional CSS in static file -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+  <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+
+  <script type="text/javascript" src="{{ STATIC_URL }} /static/js/jquery-3.2.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+  <!-- Content -->
+
+    <!-- Navbar -->
+    {% block navbar %}
+    <nav class="navbar navbar-toggleable-sm navbar-light bg-faded">
+      <button class="navbar-toggler navbar-toggler-right hover-click" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="http://www.chrisfetterolf.com"><strong>Form Template</strong></a>
+      <div style="margin-left: 50px;">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Users <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="schedule/">Schedule</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    {% endblock %} <!-- ./Navbar -->
+
+    {% block content %}{% endblock %}
+  <!-- ./Content -->
+
+  {% block footer %}{% endblock %}
+
+<!-- {% load static %}
+<script src="{% static 'js/smoothScroll.js' %}"></script> -->
+
+</body>
+
+</html>

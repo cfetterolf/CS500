@@ -1,0 +1,8 @@
+# Once everything is set up, use this to start.
+# If not set up, visit https://devcenter.heroku.com/articles/getting-started-with-python#introduction
+pipenv --three | pipenv install | pipenv shell
+
+python manage.py collectstatic
+heroku local web
+
+pip install munkres

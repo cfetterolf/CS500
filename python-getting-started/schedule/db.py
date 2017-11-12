@@ -52,14 +52,17 @@ def getUsers():
 def add_user(user):
     # Add user record in user_contact
     query_str = "INSERT INTO user_contact (first_name, last_name, email) VALUES ('%s', '%s', '%s');" % (user.get('first_name'), user.get('last_name'), user.get('email'))
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute(query_str)
 
     # Get newly generated id
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute("SELECT * FROM user_contact WHERE first_name='%s' AND last_name='%s';" % (user.get('first_name'), user.get('last_name')))
     uid = cursor.fetchall()[0][0]
 
     # Add user to association
     query_str = "INSERT INTO association (member, leader, admin, group_id, user_id, leader_preferences) VALUES (%s, %s, false, %s, %s, '%s')" % (user.get('member'), user.get('leader'), gid, uid, {1,2})
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute(query_str)
     return {'query': query_str}
 

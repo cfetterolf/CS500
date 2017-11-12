@@ -1,26 +1,15 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 
-
 [packages]
 
-<<<<<<< HEAD
 "dj-database-url" = "*"
-=======
-dj-database-url = "*"
->>>>>>> 90353e0b89743f6f13cc67c74e5873f1ce8d277b
 django = "*"
 gunicorn = "*"
 "psycopg2" = "*"
 whitenoise = "*"
 requests = "*"
-<<<<<<< HEAD
-=======
-
->>>>>>> 90353e0b89743f6f13cc67c74e5873f1ce8d277b
 
 [requires]
-
 python_version = "3.6"

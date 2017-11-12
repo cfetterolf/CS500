@@ -151,6 +151,9 @@ Converts a member object and leader object to a square matrix that can
 be used in a Hungarian algorithm
 input: member, time block and leader group dictionaries
     (key, value pairings for each)
+    sched_type:
+        'n_leaders'     doesn't take leader tb preference into account
+        'y_leaders'     take leader tb preference into account
 output: dictionary containing:
             lg_map           leader group id ~ index mapping (ROW in hung alg)
             tb_map           time block id ~ index mapping (COL in hung alg)
@@ -162,7 +165,7 @@ output: dictionary containing:
                              ct_matrix[tb_i][lg_j]
                              = list of members that match with both tb_i & lg_j
 """
-def convertToSquareMatrix(members, time_blocks, leader_groups):
+def convertToSquareMatrix(members, time_blocks, leader_groups, sched_type):
 
     # SET VARS
     # Create our TB (time block) id ~ index mapping
@@ -559,7 +562,7 @@ def runFullandPrint(members, time_blocks, leader_groups):
     """
 
     # PRE-PROCESSING STEP (prep for hung alg)
-    hungarian_input_dict = convertToSquareMatrix(members, time_blocks, leader_groups)
+    hungarian_input_dict = convertToSquareMatrix(members, time_blocks, leader_groups, 'y_leaders')
     matrix = hungarian_input_dict["ct_matrix"]
     member_matrix = hungarian_input_dict["mem_id_matrix"]
     # note: matrix == ct_matrix (key) in hungarian_input_dict output
@@ -580,7 +583,7 @@ def runFullandPrint(members, time_blocks, leader_groups):
         total += len(value)
     #     print('\nTime block %d, Leader Group %d matches members:' % (row, column))
     #     print(value)
-    # print('Total members matched: %d' % total)
+    # print('Total members matched: %d' % total)    
 
     printConvertSqMtrxInput(members, time_blocks, leader_groups)
     print('--RAN HUNG ALG--')

@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from django.http import Http404
 from django.http import HttpResponse
 from schedule.models import TimeBlock
-from schedule.db import getUsers, getTimeBlocks, get_alg_leader_groups
+from schedule.db import getUsers, getTimeBlocks, get_alg_leader_groups, add_user
 from schedule.algorithm import run
 
 
@@ -22,6 +22,13 @@ def getGroupInfo(request):
     if request.method == 'GET':
         group_info = {'users': getUsers(), 'time_blocks': getTimeBlocks(), 'leader_groups': get_alg_leader_groups()}
         return JsonResponse(group_info)
+    else:
+        raise Http404
+
+def addUser(request):
+    if request.method == 'POST':
+        response = add_user(request.POST)
+        return JsonResponse(response)
     else:
         raise Http404
 

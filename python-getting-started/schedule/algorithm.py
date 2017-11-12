@@ -42,9 +42,9 @@ def convertToSquareMatrix(members, time_blocks, leader_groups):
     # fills the ct_matrix & mem_id_matrix
     # according to tb_map and lg_map
     for tb_id in tb_map:
-        tb_obj = time_blocks[tb_id]
+        tb_obj = time_blocks[int(tb_id)]
         for mem_id in tb_obj["members_available"]:
-            mem_obj = members[mem_id]
+            mem_obj = members[int(mem_id)]
             for leader_id in mem_obj["leader_preferences"]:
                 if leader_id in tb_obj["leaders_available"]:
                     #print("time_id: "+str(tb_id)+"\nmem_id: "+str(mem_id)+"\nleader_id: "+str(leader_id)+"\n")

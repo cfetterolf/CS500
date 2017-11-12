@@ -12,20 +12,14 @@ var leader_groups = {}
 var matched_time_blocks = {}
 
 
-// function testPHP() {
-//   alert('sent')
-//   var json = '{"firstkey":"firstvalue","secondkey":"secondvalue"}';
-//       $.ajax({ type: 'POST', url: 'php/test.php', data: {json: json}, success : function(data){
-//           alert(data);
-//       }});
-// }
-
 $(document).ready(function(){
   getGroupInfo();
   handleUserInfo();
   handleUserList();
 
 });
+
+/******** DATABSE FUNCTIONS **********/
 
 function getGroupInfo() {
   console.log("requesting data...");
@@ -42,6 +36,41 @@ function getGroupInfo() {
         displayScheduleData();
     });
 }
+
+function updateDB(user) {
+  console.log("USER:");
+  console.log(user);
+  // user['csrfmiddlewaretoken'] = "{{ csrf_token }}"
+  $.post( "/ajax/db/user/", user, function(data, status) {
+    console.log(data);
+  });
+}
+
+$.ajaxSetup({
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     }
+});
+
+/***************************************/
 
 /* ALGORITHM */
 var indexes = []
@@ -159,12 +188,15 @@ function handleUserInfo() {
       schedule: user_schedule
     }
 
-    var user_id = "user_"+(num_users+1);
+    var user_id = num_users+1;
     users[user_id] = user;
     console.log(users);
 
     // Update user table
     updateUserTable(user);
+
+    // Add new user to DB
+    updateDB(user);
 
     // Close new user form
     $("#addUserForm").hide();
@@ -177,6 +209,8 @@ function handleUserInfo() {
   })
 
 }
+
+
 
 function setUserTable(users) {
   for(var user in users) {

@@ -13,4 +13,5 @@ def connect_postgres():
         host=url.hostname,
         port=url.port
     )
+    conn.autocommit = True
     return conn

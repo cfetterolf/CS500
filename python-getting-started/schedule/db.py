@@ -52,19 +52,46 @@ def getUsers():
 def add_user(user):
     # Add user record in user_contact
     query_str = "INSERT INTO user_contact (first_name, last_name, email) VALUES ('%s', '%s', '%s');" % (user.get('first_name'), user.get('last_name'), user.get('email'))
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute(query_str)
 
     # Get newly generated id
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute("SELECT * FROM user_contact WHERE first_name='%s' AND last_name='%s';" % (user.get('first_name'), user.get('last_name')))
     uid = cursor.fetchall()[0][0]
 
     # Add user to association
-    query_str = "INSERT INTO association (member, leader, admin, group_id, user_id, leader_preferences) VALUES (%s, %s, false, %s, %s, '%s')" % (user.get('member'), user.get('leader'), gid, uid, {1,2})
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    leader_preferences = user.get('preferred_leaders')
+    leader_preferences_str = ','.join(leader_preferences)
+    leader_preferences_str = "{"+leader_preferences_str+"}"
+    query_str = "INSERT INTO association (member, leader, admin, group_id, user_id, leader_preferences) VALUES (%s, %s, false, %s, %s, '%s')" % (user.get('member'), user.get('leader'), gid, uid, leader_preferences_str)
     cursor.execute(query_str)
-    return {'query': query_str}
+
+    # Add user to time blocks
+    schedule = user.get('schedule')
+    for tid in schedule:
+        query_str = "SELECT * FROM availability WHERE time_id=%s AND group_id=%s;" % (tid, gid)
+        cursor.execute(query_str)
+        row = cursor.fetchall()[0]
+        placeholder = '?'
+        query = ''
+
+        if(user.get('member')):
+            members = row[3]
+            members.append(str(uid))
+            members_str = ','.join(members)
+            members_str = "{"+members_str+"}"
+            query = "UPDATE availability SET members = '%s' WHERE time_id = %s AND group_id = %s" % (members_str, tid, gid)
+            cursor.execute(query, members)
+
+        if(user.get('leader')):
+            leaders = row[4]
+            leaders.append(str(uid))
+            leaders_str = ','.join(leaders)
+            leaders_str = "{"+leaders_str+"}"
+            query = "UPDATE availability SET leaders = '%s' WHERE time_id = %s AND group_id = %s" % (leaders_str, tid, gid)
+            cursor.execute(query, leaders)
+
+
+    return {'query': query}
 
 def getTimeBlocks():
     # pull the info from the database

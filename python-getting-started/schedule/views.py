@@ -27,7 +27,7 @@ def getGroupInfo(request):
 
 def addUser(request):
     if request.method == 'POST':
-        response = add_user(request.POST)
+        response = add_user(json.loads(request.body))
         return JsonResponse(response)
     else:
         raise Http404

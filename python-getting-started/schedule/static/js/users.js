@@ -34,6 +34,7 @@ function getGroupInfo() {
         // Display the users
         setUserTable(users);
         displayScheduleData();
+        displayLeaderPreferences();
     });
 }
 
@@ -41,7 +42,7 @@ function updateDB(user) {
   console.log("USER:");
   console.log(user);
   // user['csrfmiddlewaretoken'] = "{{ csrf_token }}"
-  $.post( "/ajax/db/user/", user, function(data, status) {
+  $.post( "/ajax/db/user/", JSON.stringify(user), function(data, status) {
     console.log(data);
   });
 }
@@ -120,6 +121,36 @@ function displayScheduleData() {
   }
 }
 
+function displayLeaderPreferences() {
+  var pref_l = $('#preferredLeaders');
+  var html = ''
+  var count = 0;
+  for (lgid in leader_groups) {
+    console.log(leader_groups[lgid]);
+    var leaders = leader_groups[lgid]['leaders'] //array
+    html += '<div class="form-check form-check-inline active mt-sm"><label class="form-check-label"><input class="form-check-input leaderCheckbox" type="checkbox" data-block-lgid="' + lgid +'">  '
+    console.log(html);
+    console.log(leaders.length);
+    for (var i = 0; i < leaders.length; i++) {
+      if (i > 0) {
+        html += ', '
+      }
+      console.log(leaders[i]);
+      html += users[leaders[i]]['first_name']
+    }
+
+    html += '</input></label></div>'
+
+    if (count > 3) {
+      console.log('break');
+      html += '<br />' // new line
+      count = 0
+    }
+    count += 1
+  }
+  pref_l.html(html)
+}
+
 function handleUserList() {
 
   // Click to see a user's availability
@@ -137,13 +168,16 @@ function handleUserList() {
 
 function handleUserInfo() {
 
-  $(".leaderCheckbox").click(function (event) {
+  $('#preferredLeaders').on('change', '.leaderCheckbox', function() {
     if ($(this).is(":checked")) {
-      leaders.push($(this).val());
+      console.log("add leader!");
+      var lgid = $(this).attr("data-block-lgid");
+      leaders.push(lgid);
     } else {
-      leaders.splice( $.inArray($(this).val(), leaders), 1 );
+      leaders.splice( $.inArray(lgid, leaders), 1 );
     }
   });
+
 
   $("#memberCheckbox").click(function (event) {
     if ($(this).is(":checked")) {
@@ -161,15 +195,18 @@ function handleUserInfo() {
     }
   });
 
-  // select times free
-  $(".timeCheckbox").click(function (event) {
+
+  $('#timeBlocks').on('change', '.timeCheckbox', function() {
     var id = $(this).attr("data-block-id");
-    if ($(this).is(":checked")) {
+    console.log("id:");
+    console.log(id);
+    if(this.checked) { // checkbox is checked
       time_blocks[id];
       user_schedule[id] = {day: time_blocks[id]['day'], start: time_blocks[id]['start'], end: time_blocks[id]['end']};
-    } else {
+    } else { // unchecked
       delete user_schedule[id];
     }
+    console.log(user_schedule);
   });
 
   $("#submitNewUser").click(function(){
@@ -185,7 +222,8 @@ function handleUserInfo() {
       email: $("#emailInput").val(),
       member: member,
       leader: leader,
-      schedule: user_schedule
+      schedule: user_schedule,
+      preferred_leaders: leaders
     }
 
     var user_id = num_users+1;

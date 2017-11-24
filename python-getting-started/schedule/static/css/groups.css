@@ -1,0 +1,139 @@
+/* PORTFOLIO */
+
+.list-group {
+  border-top: 0 none !important;
+}
+
+.btn:focus,.btn:active {
+   outline: none !important;
+   box-shadow: none;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+.del-img {
+  width: 35px;
+  float: right;
+  margin-right: -15px;
+  margin-top: -15px;
+  cursor: pointer;
+  display: None;
+}
+.del-img:hover {
+  opacity: .85;
+}
+
+.center-img {
+  display: block;
+  margin: auto;
+  width: 80px;
+}
+
+.padded-item {
+  background-color: rgba(252, 252, 252, 0.9);
+  box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
+  margin: 10px;
+  /*cursor: pointer;*/
+}
+
+.padded-item:hover {
+  background-color: white;
+  box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+  margin: 10px;
+  /*cursor: pointer;*/
+}
+
+
+
+.portfolio-type {
+  color: #404040;
+}
+
+.portfolio-sections {
+  padding: 10px !important;
+}
+
+.portfolio-item {
+
+}
+
+.portfolio-item-title {
+  font-size: 150%;
+  font-weight: 400;
+  margin-top: 10px;
+}
+
+.portfolio-item-footer {
+  background-color: #4da6ff !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  padding-bottom: 5px !important;
+  padding-top: 15px !important;
+  height: 50px;
+}
+
+.footer-blue {
+  background-color: #4da6ff !important;
+}
+.footer-blue:hover {
+  background-color: #1a8cff!important;
+  cursor: pointer !important;
+}
+
+.footer-green {
+  background-color: #00cc99 !important;
+}
+.footer-green:hover {
+  background-color: #00b386 !important;
+  cursor: pointer !important;
+}
+
+.footer-pink {
+  background-color: #ffb3d9 !important;
+}
+.footer-pink:hover {
+  background-color: #ff80bf !important;
+  cursor: pointer !important;
+}
+
+.portfolio-item-body {
+  padding: 10px;
+
+}
+
+.portfolio-item-footer a {
+  color: white;
+  margin-top: -9px;
+  position: absolute;
+}
+
+.divider {
+  width: 230px; margin: 0 auto; margin-top: 30px; background-color: #FFF;
+}
+
+#sidebar #accordion {
+  /*background-color: #f2f2f2;
+  border-radius: 10px !important;
+  box-shadow: 1px 1px 1px rgba(0,0,0,0.2);*/
+}
+
+/*.jumbotron {
+  border-radius: 10px !important;
+  box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+  height: 200px;
+  background-color: #ffffff;
+}
+
+.jumbotron h4 {
+  font-size: 30px;
+  font-weight: 400;
+  margin-top: -10px;
+  color: #404040;
+}*/
+
+.item-link {
+  color: inherit;
+  text-decoration: none !important;
+}

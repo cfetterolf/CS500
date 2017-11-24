@@ -1,25 +1,36 @@
 from schedule.connectDB import connect_postgres
+from django.conf import settings
 import psycopg2
 
 #CREATE TABLE time_block (ID bigserial primary key NOT NULL, day varchar(15) NOT NULL, start_time decimal NOT NULL, end_time decimal NOT NULL);
 
-users = {}
-gid = 1
 
 # connect to DB
 conn = connect_postgres()
 cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-#def get_data():
-    #pull all data
+def set_gid(body):
+    new_gid = int(body.get('gid'))
+    settings.GID = new_gid
+    return {'new_gid': settings.GID}
 
+def reset_gid():
+    settings.GID = None
+    return {'gid': settings.GID}
 
-def getUsers():
+def get_group_info(gid):
+    info = {}
+    query = "SELECT * FROM group_info WHERE id=%d" % (gid)
+    cursor.execute(query)
+    for row in cursor:
+        return {'name': row[1], 'term': row[2]}
 
+def getUsers(gid):
+    users = {}
     # get all users in our group
-    cursor.execute("SELECT * FROM user_contact INNER JOIN association ON user_contact.id = association.user_id AND association.group_id="+str(gid))
-    cursor_blocks = cursor.fetchall()
-    for row in cursor_blocks:
+    query = "SELECT * FROM user_contact INNER JOIN association ON user_contact.id = association.user_id AND association.group_id = %d" % (settings.GID)
+    cursor.execute(query)
+    for row in cursor:
         uid = row[0] # get user id
         users[uid] = {}
         users[uid]['member'] = row[5]
@@ -27,36 +38,13 @@ def getUsers():
         users[uid]['first_name'] = row[1]
         users[uid]['last_name'] = row[2]
         users[uid]['email'] = row[3]
-
-
-    # users = {
-    #   '001': {
-    #     'first_name': "Chris",
-    #     'last_name': "Fetterolf",
-    #     'email': "chris.fetterolf@gmail.com",
-    #     'member': True,
-    #     'leader': False,
-    #     'schedule': ['100', '103', '104'],
-    #   },
-    #   '002': {
-    #     'first_name': "Andrea",
-    #     'last_name': "Narciso",
-    #     'email': "anarciso@middlebury.edu",
-    #     'member': True,
-    #     'leader': True,
-    #     'schedule': ['101', '102', '104', '106'],
-    #   }
-    # }
     return users
 
-def add_user(user):
+def add_user(user, gid):
     # Add user record in user_contact
-    query_str = "INSERT INTO user_contact (first_name, last_name, email) VALUES ('%s', '%s', '%s');" % (user.get('first_name'), user.get('last_name'), user.get('email'))
+    query_str = "INSERT INTO user_contact (first_name, last_name, email) VALUES ('%s', '%s', '%s') RETURNING id;" % (user.get('first_name'), user.get('last_name'), user.get('email'))
     cursor.execute(query_str)
-
-    # Get newly generated id
-    cursor.execute("SELECT * FROM user_contact WHERE first_name='%s' AND last_name='%s';" % (user.get('first_name'), user.get('last_name')))
-    uid = cursor.fetchall()[0][0]
+    uid = cursor.fetchone()[0]
 
     # Add user to association
     leader_preferences = user.get('preferred_leaders')
@@ -93,7 +81,77 @@ def add_user(user):
 
     return {'query': query}
 
-def getTimeBlocks():
+def get_groups():
+    cursor.execute("SELECT * FROM group_info WHERE email='%s'" % settings.EMAIL)
+    cursor_blocks = cursor.fetchall()
+    groups = {}
+    for group in cursor_blocks:
+        groups[group[0]] = {
+            'name': group[1],
+            'term': group[2],
+            'email': group[3],
+            'password': group[4]
+        }
+    return groups
+
+def add_group(group):
+    query = "INSERT INTO group_info (name, term, email, password) VALUES ('%s', '%s', '%s', '%s')" % (group.get('name'), group.get('term'), settings.EMAIL, settings.PASSWORD)
+    cursor.execute(query)
+
+    # Get newly generated gid
+    cursor.execute("SELECT * FROM group_info WHERE name='%s' AND term='%s' AND email='%s';" % (group.get('name'), group.get('term'), settings.EMAIL))
+    gid = cursor.fetchall()[0][0]
+
+    for tid in group.get('time_blocks'):
+        block = group.get('time_blocks')[tid]
+        query = "INSERT INTO time_block (day, start_time, end_time) VALUES ('%s', %d, %d) RETURNING id" % (block['day'], block['start'], block['end'])
+        cursor.execute(query)
+        tid = cursor.fetchone()[0]
+
+        query = "INSERT INTO availability (time_id, group_id, members, leaders) VALUES (%d, %d, '%s', '%s')" % (int(tid), int(gid), '{}', '{}')
+        cursor.execute(query)
+    return {'query': query}
+
+def delete_group(gid):
+    #delete from group_info
+    query = "DELETE FROM group_info WHERE id=%d" % (gid)
+    cursor.execute(query)
+
+    #delete users from association, user_contact
+    query = "DELETE FROM user_contact USING association WHERE user_contact.id = association.user_id AND association.group_id=%s" % (gid)
+    cursor.execute(query)
+    query = "DELETE FROM association WHERE group_id=%s" % (gid)
+    cursor.execute(query)
+
+
+    #delete from availability, time_block
+    query = "DELETE FROM time_block USING availability WHERE time_block.id = availability.time_id AND availability.group_id=%s" % (gid)
+    cursor.execute(query)
+    query = "DELETE FROM availability WHERE group_id=%s" % (gid)
+    cursor.execute(query)
+
+    return {'message': 'deleted all info from group!'}
+
+def login_account(body):
+    email = body.get('email')
+    password = body.get('password')
+    cursor.execute("SELECT * FROM account WHERE email='%s' AND password='%s'" % (email, password))
+    cursor_blocks = cursor.fetchall()
+
+    groups = []
+    for row in cursor_blocks:
+        groups.append(row[3])
+
+    if not groups:
+        return {'failure': 'Invalid email/password'}
+    else:
+        settings.LOGGED_IN = True
+        settings.EMAIL = email
+        settings.PASSWORD = password
+        return {'success': 'success'}
+
+
+def getTimeBlocks(gid):
     # pull the info from the database
     cursor.execute("SELECT * FROM time_block INNER JOIN availability ON time_block.id = availability.time_id AND availability.group_id="+str(gid))
     cursor_blocks = cursor.fetchall()
@@ -115,7 +173,7 @@ def getTimeBlocks():
 """
 returns the composite members object for algoritm
 """
-def get_alg_members():
+def get_alg_members(gid):
     members = {}
     # get all users in our group
     cursor.execute("SELECT * FROM user_contact INNER JOIN association ON user_contact.id = association.user_id AND association.member = true AND association.group_id="+str(gid))
@@ -126,7 +184,7 @@ def get_alg_members():
         members[uid]['first_name'] = member[1]
         members[uid]['last_name'] = member[2]
         members[uid]['email'] = member[3]
-        members[uid]['leader_preferences'] = member[10]
+        members[uid]['leader_preferences'] = results = list(map(int, member[10]))
 
 
     # members = {
@@ -155,7 +213,7 @@ def get_alg_members():
 """
 returns composite leader_groups object for algoritm
 """
-def get_alg_leader_groups():
+def get_alg_leader_groups(gid):
     leader_groups = {}
 
     # Pull this leader_groups object from DB
@@ -183,7 +241,7 @@ def get_alg_leader_groups():
 """
 returns composite time_block object for algoritm
 """
-def get_alg_time_blocks():
+def get_alg_time_blocks(gid):
     time_blocks = {}
 
     # DB: JOIN availability and time_block like i did above

@@ -1,0 +1,27 @@
+.form-title {
+  margin-top: 10px;
+}
+
+.form-group {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.day {
+  width: 100%
+}
+
+#form-results {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.mt-lg {
+  margin-top: 50px;
+}
+.mt-md {
+  margin-top: 25px;
+}
+.mt-sm {
+  margin-top: 10px;
+}

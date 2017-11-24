@@ -16,7 +16,6 @@ $(document).ready(function(){
   getGroupInfo();
   handleUserInfo();
   handleUserList();
-
 });
 
 /******** DATABSE FUNCTIONS **********/
@@ -31,18 +30,23 @@ function getGroupInfo() {
         time_blocks = data.time_blocks
         leader_groups = data.leader_groups
 
+        // Set the header
+        $('#groupName').html(data.group_name)
+        $('#groupTerm').html(data.group_term)
+
         // Display the users
-        setUserTable(users);
+        setMemberTable(users);
         displayScheduleData();
         displayLeaderPreferences();
     });
 }
 
 function updateDB(user) {
-  console.log("USER:");
+  console.log("user sent to DB:");
   console.log(user);
   // user['csrfmiddlewaretoken'] = "{{ csrf_token }}"
   $.post( "/ajax/db/user/", JSON.stringify(user), function(data, status) {
+    console.log("DB response:");
     console.log(data);
   });
 }
@@ -71,9 +75,10 @@ $.ajaxSetup({
      }
 });
 
-/***************************************/
+/****************** END DB FUNCS *********************/
 
-/* ALGORITHM */
+
+/******************   ALGORITHM  *********************/
 var indexes = []
 var lg_map = []
 var tb_map = []
@@ -106,7 +111,7 @@ function handleResults() {
   }
 }
 
-/* ./ALGORITHM */
+/*****************  END ALGORITHM  *****************/
 
 function displayScheduleData() {
 
@@ -115,7 +120,6 @@ function displayScheduleData() {
     var day = block['day'];
     var start = block['start'];
     var end = block['end'];
-    console.log(block);
     var day_col = document.getElementById(day);
     day_col.innerHTML += '<div class="form-check"><label class="form-check-label"><input class="form-check-input timeCheckbox" type="checkbox" data-block-id="' + id +'">' + formatTime(start) + ' - ' + formatTime(end) + '</input></label></div>';
   }
@@ -126,23 +130,18 @@ function displayLeaderPreferences() {
   var html = ''
   var count = 0;
   for (lgid in leader_groups) {
-    console.log(leader_groups[lgid]);
     var leaders = leader_groups[lgid]['leaders'] //array
     html += '<div class="form-check form-check-inline active mt-sm"><label class="form-check-label"><input class="form-check-input leaderCheckbox" type="checkbox" data-block-lgid="' + lgid +'">  '
-    console.log(html);
-    console.log(leaders.length);
     for (var i = 0; i < leaders.length; i++) {
       if (i > 0) {
         html += ', '
       }
-      console.log(leaders[i]);
       html += users[leaders[i]]['first_name']
     }
 
     html += '</input></label></div>'
 
-    if (count > 3) {
-      console.log('break');
+    if (count > 5) {
       html += '<br />' // new line
       count = 0
     }
@@ -162,6 +161,9 @@ function handleUserList() {
   // Click to add new user
   $("#addUserButton").click(function (event) {
     $("#addUserForm").show();
+    $('html,body').stop().animate({
+      scrollTop: $("#addUserForm").offset().top - 20
+    }, 700);
   });
 
 }
@@ -170,7 +172,6 @@ function handleUserInfo() {
 
   $('#preferredLeaders').on('change', '.leaderCheckbox', function() {
     if ($(this).is(":checked")) {
-      console.log("add leader!");
       var lgid = $(this).attr("data-block-lgid");
       leaders.push(lgid);
     } else {
@@ -198,8 +199,6 @@ function handleUserInfo() {
 
   $('#timeBlocks').on('change', '.timeCheckbox', function() {
     var id = $(this).attr("data-block-id");
-    console.log("id:");
-    console.log(id);
     if(this.checked) { // checkbox is checked
       time_blocks[id];
       user_schedule[id] = {day: time_blocks[id]['day'], start: time_blocks[id]['start'], end: time_blocks[id]['end']};
@@ -215,7 +214,6 @@ function handleUserInfo() {
 
     var num_users = Object.keys(users).length;
     var name = $("#nameInput").val().split(" ");
-    console.log(name);
     user = {
       first_name: name[0],
       last_name: name[1],
@@ -228,14 +226,11 @@ function handleUserInfo() {
 
     var user_id = num_users+1;
     users[user_id] = user;
+    console.log('Updated users:');
     console.log(users);
-
-    // Update user table
-    updateUserTable(user);
 
     // Add new user to DB
     updateDB(user);
-
     // Close new user form
     $("#addUserForm").hide();
 
@@ -246,29 +241,46 @@ function handleUserInfo() {
     $("#addUserForm").hide();
   })
 
+  $(document).on('click', '.request-user-schedule', function() {
+    alert("show availability")
+  });
+
 }
 
 
 
-function setUserTable(users) {
+function setMemberTable(users) {
+  n_mem = 0
+  n_lead = 0
   for(var user in users) {
-    var newRow = $("<tr>");
-    var cols = "";
-    var mem = '';
-    var lead = '';
-    if(users[user].member == true) {mem = 'X';}
-    if(users[user].leader == true) {lead = 'X';}
-
-    cols += '<td>' + users[user].first_name + ' ' + users[user].last_name + '</td>';
-    cols += '<td>' + mem + '</td>';
-    cols += '<td>' + lead + '</td>';
-    cols += '<td><a href="#" class="request-user-schedule">Click Here<a></td>';
-    newRow.append(cols);
-    $("table.user-table").append(newRow);
+    if (users[user].member == true ) {
+      $("table.member-table").append(newRow(users, user));
+      n_mem += 1
+    }
+    if (users[user].leader == true){
+      $("table.leader-table").append(newRow(users, user));
+      n_lead += 1
+    }
   }
+  $('#numMembers').html(n_mem)
+  $('#numLeaders').html(n_lead)
 }
 
-function updateUserTable(user) {
+function newRow(users, user) {
+  var newRow = $("<tr>");
+  var cols = "";
+  cols += '<td>' + users[user].first_name + ' ' + users[user].last_name + '</td>';
+  cols += '<td>' + users[user].email + '</td>';
+  cols += '<td><a href="#" class="request-user-schedule">Click Here<a></td>';
+  newRow.append(cols);
+  return newRow
+}
+
+function show_availability() {
+  alert('test')
+}
+
+function updateUserTables(user) {
   var newRow = $("<tr>");
   var cols = "";
   var mem = '';
@@ -279,9 +291,9 @@ function updateUserTable(user) {
   cols += '<td>' + user.first_name + ' ' + user.last_name + '</td>';
   cols += '<td>' + mem + '</td>';
   cols += '<td>' + lead + '</td>';
-  cols += '<td><a href="#" class="request-user-schedule">Click Here<a></td>';
+  cols += '<td><a herf="#" class="request-user-schedule">Click Here<a></td>';
   newRow.append(cols);
-  $("table.user-table").append(newRow);
+  $("table.member-table").append(newRow);
 }
 
 function resetUserSchedule() {

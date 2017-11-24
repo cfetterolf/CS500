@@ -10,9 +10,6 @@ body {
   cursor: pointer;
 }
 
-.schedule {
-  
-}
 
 .mt-lg {
   margin-top: 50px;
@@ -24,6 +21,20 @@ body {
 
 .hover-click {
   cursor: pointer;
+}
+
+.clearBoth { clear:both; }
+
+.header-left { float: left; margin-top: 7px}
+.header-right {float: right }
+
+.header .text-muted {
+  margin-top: 14px;
+  margin-left: 20px;
+}
+
+.header .btn {
+  margin-left: 20px;
 }
 
 

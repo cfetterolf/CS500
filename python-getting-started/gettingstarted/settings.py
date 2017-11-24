@@ -12,6 +12,16 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import dj_database_url
 
+# GID = None
+# EMAIL = ''
+# PASSWORD = ''
+# LOGGED_IN = False
+
+GID = 1
+EMAIL = 'chris.fetterolf@gmail.com'
+PASSWORD = 'test'
+LOGGED_IN = True
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -55,6 +65,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
+
+SESSION_ENGINE= 'django.contrib.sessions.backends.cached_db'
 
 ROOT_URLCONF = 'gettingstarted.urls'
 

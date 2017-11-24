@@ -2,46 +2,56 @@
 
 {% block content %}
 <!-- Page Content -->
+
+    <div class="container mt-lg">
+      <div class="header">
+        <h3 class="header-left"><strong id="groupName"></strong></h3>
+        <h5 class="header-left text-muted" id="groupTerm"></h5>
+        <button class="btn btn-primary header-right" onclick="runAlgorithm()" id="runAlgorithm">Display Optimal Schedule</button>
+        <button class="btn btn-success header-right" id="addUserButton">Add User</button>
+        <br class="clearBoth" />
+      </div>
+      <hr style="width=80%; margin-top=20px"/>
+    </div>
     <div class="container user-list">
-
       <div class="row mt-lg">
+        <div class="col-12 col-lg-6">
 
-        <h2>Current Users</h2>
+          <h4 style="display:inline">Members</h4><h5 style="display:inline; float: right; margin-right: 20px;" id="numMembers">2</h5>
 
-        <table class="table table-striped user-table" id="userTable">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Member</th>
-              <th>Leader</th>
-              <th>Availability</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- This gets filled with users w/ JS -->
-          </tbody>
-          <tfoot>
-            <tr id="addUserRow">
-              <td><button class="btn btn-success" id="addUserButton">Add User</button></td><td /><td /><td />
-            </tr>
-          </tfoot>
-        </table>
-
-        <div>
-          <span>
-            <button class="btn btn-success mt-sm" onclick="runAlgorithm()" id="runAlgorithm">Get Optimal Schedule</button>
-          </span>
-          <p id="status"></p>
+          <table class="table table-striped member-table" id="memberTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Availability</th>
+              </tr>
+            </thead>
+            <tbody></tbody></table>
         </div>
 
-      </div>
+          <div class="col-12 col-lg-6">
+
+            <span><h4 style="display:inline">Leaders</h4><h5 style="display:inline; float: right; margin-right: 20px;" id="numLeaders">2</h5></span>
+
+            <table class="table table-striped leader-table" id="leaderTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Availability</th>
+                </tr>
+              </thead>
+              <tbody></tbody></table>
+          </div>
+        </div> <!-- ./row -->
+
 
       <div class="jumbotron mt-lg" id="addUserForm">
         <h2>Add New User</h2>
         <form class="mt-sm" method="post">{% csrf_token %}
           <!-- Name -->
-          <div class="mt-lg"><h4>User Information</h4></div>
-          <div class="form-group row">
+          <div class="form-group row mt-lg">
             <label for="nameInput" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-10">
               <input class="form-control" id="nameInput" placeholder="First and Last">
@@ -104,10 +114,11 @@
         </form>
 
         <span>
-          <button class="btn btn-success mt-sm" id="submitNewUser">Submit</button>
+          <a href="/"><button class="btn btn-success mt-sm" id="submitNewUser">Submit</button></a>
           <button class="btn btn-danger cancel mt-sm" style="margin-left: 10px">Cancel</button>
         </span>
     </div>
+    <div style="height: 50px;" />
     </div> <!-- ./user-list -->
 
 {% load static %}<script src="{% static 'js/users.js' %}"></script>

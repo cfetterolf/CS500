@@ -49,37 +49,42 @@
 
 <body>
   <!-- Content -->
+  {% block content %}
+  <div class="row justify-content-center">
 
-    <!-- Navbar -->
-    {% block navbar %}
-    <nav class="navbar navbar-toggleable-sm navbar-light bg-faded">
-      <button class="navbar-toggler navbar-toggler-right hover-click" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <a class="navbar-brand" href=""><strong>Group Scheduler</strong></a>
-      <div style="margin-left: 50px;">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'index' %}">Users</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'schedule' %}">Schedule</a>
-          </li>
-        </ul>
+  <div class="col-md-6" style="">
+
+  <!-- Login Form -->
+  <div class="nb-login">
+    <p id="errorMsg"></p>
+  	<form>
+  		<div class="form-group">
+        <input type="email" name="email" id="email" placeholder="john@doe.com"/>
       </div>
-      <form class="form-inline ml-auto">
-        <a href="/groups/" class="btn btn-outline-info my-2 my-sm-0" style="margin-right: 10px;">My Groups</a>
-        <a href="{% url 'logout' %}" class="btn btn-outline-success my-2 my-sm-0">Log Out</a>
-      </form>
-    </nav>
-    {% endblock %} <!-- ./Navbar -->
+  		<div class="form-group">
+        <input type="password" name="password" id="password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"/>
+  		</div>
+  		<div class="checkbox">
+  			<label>
+  				<input type="checkbox"> Remember Me
+  			</label>
+  		</div>
+  	</form>
+    <div class="center">
+      <button onclick="login()" class="btn btn-outline-success center">Login</button>
+    </div>
+  	<div style="text-align: center;">OR</div>
+  	<div class="center">
+  		<button onclick="signUp()" class="btn btn-outline-info center">Sign Up</button>
+  	</div>
+  </div> <!-- ./Login Form -->
+  </div>
+  </div>
 
-    {% block content %}{% endblock %}
+
+  {% load static %}<script src="{% static 'js/login.js' %}"></script>
+  {% endblock %}
   <!-- ./Content -->
 
-<!-- {% load static %}
-<script src="{% static 'js/smoothScroll.js' %}"></script> -->
-
 </body>
-
 </html>

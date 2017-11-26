@@ -2,6 +2,15 @@
 
 {% block content %}
 
+<div class="container mt-lg">
+  <div class="header">
+    <h3 class="header-left"><strong id="groupName">{{ group_info.group_name }}</strong></h3>
+    <h5 class="header-left text-muted" id="groupTerm">{{ group_info.group_term }}</h5>
+    <a class="header-right" href="{% url 'index' %}" style="margin-top: 8px">&laquo; Back</a>
+    <br class="clearBoth" />
+  </div>
+  <hr style="width=80%; margin-top=20px"/>
+</div>
 <div class="container schedule">
   <table class="table schedule-table" id="scheduleTable">
     <thead>
@@ -24,5 +33,7 @@
   </table>
 </div>
 
+
 {% load static %}<script src="{% static 'js/schedule.js' %}"></script>
+
 {% endblock %}

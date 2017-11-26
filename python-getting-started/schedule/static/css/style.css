@@ -37,6 +37,17 @@ body {
   margin-left: 20px;
 }
 
+.blue-link {
+  color: #0645AD !important;
+  cursor: pointer;
+}
+.blue-link:hover {
+  text-decoration: underline !important;
+}
+
+.form-check { margin-left: 5px;}
+
+.modal { position: absolute !important; }
 
 
 

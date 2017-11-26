@@ -7,13 +7,55 @@
       <div class="header">
         <h3 class="header-left"><strong id="groupName"></strong></h3>
         <h5 class="header-left text-muted" id="groupTerm"></h5>
-        <button class="btn btn-primary header-right" onclick="runAlgorithm()" id="runAlgorithm">Display Optimal Schedule</button>
+        <a href="{% url 'schedule' %}" class="btn btn-md btn-primary header-right" onclick='runAlgorithm()' id="runAlgorithm">Display Optimal Schedule</a>
         <button class="btn btn-success header-right" id="addUserButton">Add User</button>
         <br class="clearBoth" />
       </div>
       <hr style="width=80%; margin-top=20px"/>
     </div>
+
     <div class="container user-list">
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Preferred Leaders</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <ul id="leaderList" class="list-group"></ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leader Modal -->
+      <div class="modal fade" id="leaderModal" tabindex="1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Select Leaders to Add</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <ul id="addLeaderList" class="list-group"></ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="addSelectedLeaders">Done</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="row mt-lg">
         <div class="col-12 col-lg-6">
 
@@ -24,7 +66,7 @@
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Availability</th>
+                <th>Preferred Leaders</th>
               </tr>
             </thead>
             <tbody></tbody></table>
@@ -39,7 +81,7 @@
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>Availability</th>
+                  <th>Preferred Leaders</th>
                 </tr>
               </thead>
               <tbody></tbody></table>

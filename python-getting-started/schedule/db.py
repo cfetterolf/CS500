@@ -38,6 +38,7 @@ def getUsers(gid):
         users[uid]['first_name'] = row[1]
         users[uid]['last_name'] = row[2]
         users[uid]['email'] = row[3]
+        users[uid]['leader_preferences'] = row[10]
     return users
 
 def add_user(user, gid):
@@ -81,8 +82,25 @@ def add_user(user, gid):
 
     return {'query': query}
 
+def add_leaders(body):
+    newLeaders = body.get('new_leaders')
+    uid = body.get('uid')
+
+    query = "SELECT * FROM association WHERE user_id=%s AND group_id=%s;" % (uid, settings.GID)
+    cursor.execute(query)
+    row = cursor.fetchall()[0]
+    leader_pref = row[6]
+    leader_pref += newLeaders
+    leader_pref_str = ','.join(str(e) for e in leader_pref)
+    leader_pref_str = "{"+leader_pref_str+"}"
+
+    query = "UPDATE association SET leader_preferences = '%s' WHERE user_id = %s AND group_id = %s" % (leader_pref_str, uid, settings.GID)
+    cursor.execute(query)
+    return {'query': query}
+
+
 def get_groups():
-    cursor.execute("SELECT * FROM group_info WHERE email='%s'" % settings.EMAIL)
+    cursor.execute("SELECT * FROM group_info WHERE email='%s' AND password='%s'" % (settings.EMAIL, settings.PASSWORD))
     cursor_blocks = cursor.fetchall()
     groups = {}
     for group in cursor_blocks:
@@ -140,7 +158,7 @@ def login_account(body):
 
     groups = []
     for row in cursor_blocks:
-        groups.append(row[3])
+        groups.append(row[0])
 
     if not groups:
         return {'failure': 'Invalid email/password'}
@@ -148,8 +166,28 @@ def login_account(body):
         settings.LOGGED_IN = True
         settings.EMAIL = email
         settings.PASSWORD = password
+        settings.AID = groups[0]
         return {'success': 'success'}
 
+def signup_account(body):
+    email = body.get('email')
+    password = body.get('password')
+    cursor.execute("SELECT * FROM account WHERE email='%s' AND password='%s'" % (email, password))
+    cursor_blocks = cursor.fetchall()
+    groups = []
+    for row in cursor_blocks:
+        groups.append(row[0])
+
+    if not groups:
+        cursor.execute("INSERT INTO account (email, password) VALUES ('%s', '%s') RETURNING id" % (email, password))
+        account_id = cursor.fetchone()[0]
+        settings.LOGGED_IN = True
+        settings.EMAIL = email
+        settings.PASSWORD = password
+        settings.AID = account_id
+        return {'success': 'success'}
+    else:
+        return {'failure': 'Account already exists!'}
 
 def getTimeBlocks(gid):
     # pull the info from the database

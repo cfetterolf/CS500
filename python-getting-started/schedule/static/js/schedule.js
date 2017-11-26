@@ -1,29 +1,9 @@
-/********** DUMMY VARS ************/
-var time_blocks = {
-  0: {day: "monday", start: 12, end: 14},
-  1: {day: "monday", start: 16, end: 20},
-  2: {day: "tuesday", start: 14, end: 18},
-  3: {day: "thursday", start: 16, end: 20},
-  4: {day: "friday", start: 11, end: 14},
-  5: {day: "friday", start: 16, end: 18},
-  6: {day: "sunday", start: 12, end: 15}
-}
-
-var final_schedule = {
-  0: {time_id: 0, members: ["user_1"], leaders: ["user_2"]},
-  1: {time_id: 4, members: ["user_1"], leaders: ["user_2"]}
-}
-
-
-
+var alg_results;
+var group_info;
 
 
 $(document).ready(function(){
-
-  var blocks = findUniqueTimeBlocks(time_blocks);
-  console.log(blocks);
-  displayCalander(blocks);
-  displaySchedule(final_schedule);
+  getGroupInfo()
 });
 
 
@@ -90,4 +70,91 @@ function formatTimeBlock(block) {
 function showSchedule() {
   $(".user-list").hide();
   $(".schedule").show();
+}
+
+
+/******** DATABSE FUNCTIONS **********/
+
+function getGroupInfo() {
+  console.log("requesting data...");
+  // Get the group data
+  $.get("/ajax/db/", function(data, status){
+        group_info = data;
+        console.log(data);
+        console.log(status);
+        users = data.users
+        time_blocks = data.time_blocks
+        leader_groups = data.leader_groups
+
+        // Set the header
+        // $('#groupName').html(data.group_name)
+        // $('#groupTerm').html(data.group_term)
+
+        var blocks = findUniqueTimeBlocks(time_blocks);
+        displayCalander(blocks);
+        //displaySchedule(final_schedule);
+
+        runAlgorithm()
+    });
+}
+
+
+
+/******************   ALGORITHM  *********************/
+var indexes = []
+var lg_map = []
+var tb_map = []
+var member_matrix = []
+
+function runAlgorithm() {
+  $.get("/ajax/alg/", function(data, status){
+        console.log(data);
+        console.log(status);
+        indexes = data.indexes
+        lg_map = data.lg_map
+        tb_map = data.tb_map
+        member_matrix = data.member_matrix
+        handleResults()
+    });
+}
+
+function handleResults() {
+  for (var i = 0; i < indexes.length; i++) {
+    var tb = indexes[i][0]
+    var lg = indexes[i][1]
+    // matched_time_blocks[tb_map[tb]] = {}
+    console.log("Time Block "+i+":");
+    console.log(tb_map[tb]);
+    console.log("Leader Group "+i+":");
+    console.log(lg_map[lg]);
+    console.log("Members matched: ");
+    console.log(member_matrix[tb][lg]);
+    console.log();
+  }
+}
+
+/*****************  END ALGORITHM  *****************/
+
+
+function formatTime(decimal_time){
+ var time = ""+decimal_time
+ time = time.split('.')
+ var hours = Number(time[0]);
+ var minutes = Number(time[1]);
+
+  // calculate
+  var timeValue;
+
+  if (hours > 0 && hours <= 12) {
+    timeValue= "" + hours;
+  } else if (hours > 12) {
+    timeValue= "" + (hours - 12);
+  } else if (hours == 0) {
+    timeValue= "12";
+  }
+
+  minutes = Math.round(60 * (decimal_time - hours))
+  timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
+  timeValue += (hours >= 12) ? " pm" : " am";  // get AM/PM
+  return timeValue
 }

@@ -1,18 +1,6 @@
 $(document).ready(function(){
 
 
-
-  $('#login-form-link').click(function(e) {
-	   $("#login-form").delay(100).fadeIn(100);
-     $("#register-form").fadeOut(100);
-     $('#register-form-link').removeClass('active');
-     $(this).addClass('active');
-     e.preventDefault();
-   });
-	       $('#register-form-link').click(function(e) {
-
-	});
-
 });
 
 $.ajaxSetup({
@@ -40,7 +28,14 @@ $.ajaxSetup({
 });
 
 function signUp() {
-
+  $.post( "/ajax/signup/", JSON.stringify({'email': $('#email').val(), 'password': $('#password').val()}), function(data, status) {
+    console.log(data);
+    if (data.success) {
+      window.location.href = '/groups';
+    } else { // failure
+      $('#errorMsg').html(data.failure)
+    }
+  })
 }
 
 function login() {

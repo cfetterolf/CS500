@@ -15,8 +15,10 @@ urlpatterns = [
     url(r'^ajax/db/groups/$', views.getGroups, name='getGroups'),
     url(r'^ajax/db/groups/new$', views.addGroup, name='addGroup'),
     url(r'^ajax/db/user/$', views.addUser, name='addUser'),
+    url(r'^ajax/db/leaders/$', views.addLeaders, name='addLeaders'),
     url(r'^ajax/alg/$', views.run_algorithm, name='run_algorithm'),
     url(r'^ajax/gid/$', views.setGid, name='setGid'),
     url(r'^ajax/login/$', views.login, name='login'),
+    url(r'^ajax/signup/$', views.signup, name='signup'),
     url(r'^logout/$', views.logout, name='logout'),
 ]

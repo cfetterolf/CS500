@@ -10,6 +10,7 @@ var users = {}
 var time_blocks = {}
 var leader_groups = {}
 var matched_time_blocks = {}
+var group_info;
 
 
 $(document).ready(function(){
@@ -24,6 +25,7 @@ function getGroupInfo() {
   console.log("requesting data...");
   // Get the group data
   $.get("/ajax/db/", function(data, status){
+        group_info = data;
         console.log(data);
         console.log(status);
         users = data.users
@@ -85,6 +87,7 @@ var tb_map = []
 var member_matrix = []
 
 function runAlgorithm() {
+  localStorage.setItem('group_info', group_info);
   $.get("/ajax/alg/", function(data, status){
         console.log(data);
         console.log(status);
@@ -150,13 +153,70 @@ function displayLeaderPreferences() {
   pref_l.html(html)
 }
 
+/****** Add leader preferences *******/
+
+function addLeader(uid) {
+  newLeaders = []
+  $('#myModal').modal('hide');
+  // Populate modal
+  html = ""
+  for(var id in users) {
+    if (users[id].leader==true && $.inArray(parseInt(id), users[uid].leader_preferences)==-1 && id != uid) {
+      html += `
+      <li class="list-group-item">
+        <span class="form-check">
+          <input class="form-check-input" type="checkbox" value="" data-id="`+ id +`">
+        </span>
+        `+ users[id].first_name + ` `+ users[id].last_name +`</li>`
+    }
+  }
+  $('#addLeaderList').html(html)
+  $('#leaderModal .modal-footer button').attr('data-uid', uid)
+  $('#leaderModal').modal('show');
+}
+
+var newLeaders = []
+
+/*************************************/
+
 function handleUserList() {
 
-  // Click to see a user's availability
-  $(".request-user-schedule").click(function (event) {
-    // TODO
+  $(document).on('click', '.show-leader-pref', function() {
+    var uid = $(this).parent().parent().attr('data-user-id')
+    var user = users[uid]
 
+    // Populate modal
+    var html = ""
+    for (var i=0; i < user.leader_preferences.length; i++) {
+      id = user.leader_preferences[i]
+      html += `<li class="list-group-item">`+ users[id].first_name + ` `+ users[id].last_name +`</li>`
+    }
+    html += `<li class="list-group-item"><a class="blue-link" onclick="addLeader(`+uid+`)"><strong>Add Leader</strong></a></li>`
+    $('#leaderList').html(html)
+    // $('html,body').stop().animate({
+    //   scrollTop: $("#memberList").offset().top - 20
+    // }, 700);
+    $('#myModal').modal('show');
   });
+
+  // Add leaders checkboxes
+  $('#addLeaderList').on('change', '.form-check-input', function() {
+    var lid = $(this).attr("data-id");
+    if ($(this).is(":checked")) {
+      newLeaders.push(parseInt(lid));
+    } else {
+      newLeaders.splice( $.inArray(parseInt(lid), newLeaders), 1 );
+    }
+  });
+
+  // Done adding leaders
+  $("#addSelectedLeaders").click(function (event)  {
+    $.post( "/ajax/db/leaders/", JSON.stringify({'new_leaders': newLeaders, 'uid': parseInt($(this).attr('data-uid'))}), function(data, status) {
+      console.log("DB response:");
+      console.log(data);
+    });
+  });
+
 
   // Click to add new user
   $("#addUserButton").click(function (event) {
@@ -267,11 +327,11 @@ function setMemberTable(users) {
 }
 
 function newRow(users, user) {
-  var newRow = $("<tr>");
+  var newRow = $("<tr data-user-id="+ user +">");
   var cols = "";
   cols += '<td>' + users[user].first_name + ' ' + users[user].last_name + '</td>';
   cols += '<td>' + users[user].email + '</td>';
-  cols += '<td><a href="#" class="request-user-schedule">Click Here<a></td>';
+  cols += '<td><a class="show-leader-pref blue-link">Click Here<a></td>';
   newRow.append(cols);
   return newRow
 }

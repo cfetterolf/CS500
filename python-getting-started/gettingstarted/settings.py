@@ -21,6 +21,7 @@ GID = 1
 EMAIL = 'chris.fetterolf@gmail.com'
 PASSWORD = 'test'
 LOGGED_IN = True
+AID = None
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)

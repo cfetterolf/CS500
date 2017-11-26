@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from django.http import Http404
 from django.http import HttpResponse
 from schedule.models import TimeBlock
-from schedule.db import getUsers, get_group_info, getTimeBlocks, get_alg_leader_groups, add_user, set_gid, get_groups, login_account, add_group, delete_group, reset_gid
+from schedule.db import getUsers, get_group_info, getTimeBlocks, get_alg_leader_groups, add_user, add_leaders, set_gid, get_groups, login_account, signup_account, add_group, delete_group, reset_gid
 from schedule.algorithm import run
 from django.conf import settings
 
@@ -17,7 +17,15 @@ class HomePageView(TemplateView):
 
 class SchedulePageView(TemplateView):
     def get(self, request, **kwargs):
-        return render(request, 'schedule.html', context=None)
+        group_info = {
+            'users': getUsers(settings.GID),
+            'time_blocks': getTimeBlocks(settings.GID),
+            'leader_groups': get_alg_leader_groups(settings.GID),
+            'gid': settings.GID,
+            'group_name': get_group_info(settings.GID)['name'],
+            'group_term': get_group_info(settings.GID)['term']
+        }
+        return render(request, 'schedule.html', {'group_info': group_info, 'alg_results': run()})
 
 class LoginPageView(TemplateView):
     def get(self, request, **kwargs):
@@ -83,6 +91,13 @@ def addUser(request):
     else:
         raise Http404
 
+def addLeaders(request):
+    if request.method == 'POST':
+        response = add_leaders(json.loads(request.body))
+        return JsonResponse(response)
+    else:
+        raise Http404
+
 def run_algorithm(request):
     if request.method == 'GET':
         return JsonResponse(run())
@@ -102,6 +117,13 @@ def setGid(request):
 def login(request):
     if request.method == 'POST':
         response = login_account(json.loads(request.body))
+        return JsonResponse(response)
+    else:
+        raise Http404
+
+def signup(request):
+    if request.method == 'POST':
+        response = signup_account(json.loads(request.body))
         return JsonResponse(response)
     else:
         raise Http404

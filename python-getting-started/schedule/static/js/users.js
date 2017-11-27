@@ -6,10 +6,10 @@ var leader = false;
 var user_schedule = {};
 
 /********** GLOBAL VARS ************/
-var users = {}
-var time_blocks = {}
-var leader_groups = {}
-var matched_time_blocks = {}
+var users = {};
+var time_blocks = {};
+var leader_groups = {};
+var matched_time_blocks = {};
 var group_info;
 
 
@@ -28,13 +28,15 @@ function getGroupInfo() {
         group_info = data;
         console.log(data);
         console.log(status);
-        users = data.users
-        time_blocks = data.time_blocks
-        leader_groups = data.leader_groups
+        users = data.users;
+        time_blocks = data.time_blocks;
+        leader_groups = data.leader_groups;
+        // console.log('users: ');
+        // console.log(users);
 
         // Set the header
-        $('#groupName').html(data.group_name)
-        $('#groupTerm').html(data.group_term)
+        $('#groupName').html(data.group_name);
+        $('#groupTerm').html(data.group_term);
 
         // Display the users
         setMemberTable(users);
@@ -340,21 +342,21 @@ function show_availability() {
   alert('test')
 }
 
-function updateUserTables(user) {
-  var newRow = $("<tr>");
-  var cols = "";
-  var mem = '';
-  var lead = '';
-  if(user.member == true) {mem = 'X';}
-  if(user.leader == true) {lead = 'X';}
-
-  cols += '<td>' + user.first_name + ' ' + user.last_name + '</td>';
-  cols += '<td>' + mem + '</td>';
-  cols += '<td>' + lead + '</td>';
-  cols += '<td><a herf="#" class="request-user-schedule">Click Here<a></td>';
-  newRow.append(cols);
-  $("table.member-table").append(newRow);
-}
+// function updateUserTables(user) {
+//   var newRow = $("<tr>");
+//   var cols = "";
+//   var mem = '';
+//   var lead = '';
+//   if(user.member == true) {mem = 'X';}
+//   if(user.leader == true) {lead = 'X';}
+//
+//   cols += '<td>' + user.first_name + ' ' + user.last_name + '</td>';
+//   cols += '<td>' + mem + '</td>';
+//   cols += '<td>' + lead + '</td>';
+//   cols += '<td><a herf="#" class="request-user-schedule">Click Here<a></td>';
+//   newRow.append(cols);
+//   $("table.member-table").append(newRow);
+// }
 
 function resetUserSchedule() {
   user_schedule = {};

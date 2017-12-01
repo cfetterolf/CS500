@@ -9,6 +9,7 @@
         <h5 class="header-left text-muted" id="groupTerm"></h5>
         <a href="{% url 'schedule' %}" class="btn btn-md btn-primary header-right" onclick='runAlgorithm()' id="runAlgorithm">Display Optimal Schedule</a>
         <button class="btn btn-success header-right" id="addUserButton">Add User</button>
+        <button class="btn btn-danger header-right" id="deleteUserButton">Delete User</button>
         <br class="clearBoth" />
       </div>
       <hr style="width=80%; margin-top=20px"/>
@@ -56,6 +57,7 @@
         </div>
       </div>
 
+
       <div class="row mt-lg">
         <div class="col-12 col-lg-6">
 
@@ -94,7 +96,7 @@
         <form class="mt-sm" method="post">{% csrf_token %}
           <!-- Name -->
           <div class="form-group row mt-lg">
-            <label for="nameInput" class="col-sm-2 col-form-label">Name</label>
+            <label for="nameInput" class="col-sm-2 col-form-label" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Enter a user's first and last name, seperated by a space.">Name</label>
             <div class="col-sm-10">
               <input class="form-control" id="nameInput" placeholder="First and Last">
             </div>
@@ -107,19 +109,19 @@
           </div>
 
           <!-- Member/Leader -->
-          <div class="form-check form-check-inline active">
+          <div class="form-check form-check-inline active" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Select a user's status within the group.  A user can be a member (e.g. a dancer), a leader (e.g. a choreographer), or both.">
             <label class="form-check-label">
               <input class="form-check-input" type="checkbox" id="memberCheckbox" value="option1" checked="checked"> Member</input>
             </label>
           </div>
-          <div class="form-check form-check-inline">
+          <div class="form-check form-check-inline" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Select a user's status within the group.  A user can be a member (e.g. a dancer), a leader (e.g. a choreographer), or both.">
             <label class="form-check-label">
               <input class="form-check-input" type="checkbox" id="leaderCheckbox" value="option2"> Leader</input>
             </label>
           </div>
 
           <!-- Preferred Leaders -->
-          <div class="mt-lg preferred-leaders"><h4>Preferred Leaders</h4></div>
+          <div class="mt-lg preferred-leaders"><h4 data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Select the leaders that a member prefers to be matched with.  If the leader's infomation has not yet been entered, you can add more preferred leaders once the user is added to the table above.">Preferred Leaders</h4></div>
           <div id="preferredLeaders"></div>
           <!-- <div class="form-check form-check-inline active mt-sm">
             <label class="form-check-label">

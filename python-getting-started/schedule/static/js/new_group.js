@@ -115,6 +115,7 @@ function createGroupDB(group) {
   $.post( "/ajax/db/groups/new", JSON.stringify(group), function(data, status) {
     console.log("DB response:");
     console.log(data);
+    window.location.href = "/groups/";
   });
 }
 

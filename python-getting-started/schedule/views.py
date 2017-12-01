@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from django.http import Http404
 from django.http import HttpResponse
 from schedule.models import TimeBlock
-from schedule.db import getUsers, get_group_info, getTimeBlocks, get_alg_leader_groups, add_user, add_leaders, set_gid, get_groups, login_account, signup_account, add_group, delete_group, reset_gid
+from schedule.db import getUsers, get_group_info, getTimeBlocks, get_alg_leader_groups, add_user, delete_user, add_leaders, set_gid, get_groups, login_account, signup_account, add_group, delete_group, reset_gid
 from schedule.algorithm import run
 from django.conf import settings
 
@@ -88,8 +88,13 @@ def addUser(request):
     if request.method == 'POST':
         response = add_user(json.loads(request.body), settings.GID)
         return JsonResponse(response)
-    else:
-        raise Http404
+    else: # Delete user
+        uid = int(request.GET.get('uid', -1))
+        if (uid == -1):
+            return JsonResponse({'error': 'User not found'})
+        else:
+            return JsonResponse(delete_user(uid))
+
 
 def addLeaders(request):
     if request.method == 'POST':

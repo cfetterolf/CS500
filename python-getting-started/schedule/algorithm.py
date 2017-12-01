@@ -144,7 +144,10 @@ def convertToSquareMatrix(members, time_blocks, leader_groups, sched_type):
         # for each tb, iterates through each member available at that tb
         # gets the corresponding member object (incl first, last name, email etc)
         for mem_id in tb_obj["members_available"]:
-            mem_obj = members[int(mem_id)]
+            try:
+                mem_obj = members[int(mem_id)]
+            except:
+                continue
 
             # print('\t mem_id: ' + str(mem_id) + ', leader pref: ' +
             #     str(mem_obj["leader_preferences"]))

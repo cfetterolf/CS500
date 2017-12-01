@@ -78,9 +78,39 @@ def add_user(user, gid):
             leaders_str = "{"+leaders_str+"}"
             query = "UPDATE availability SET leaders = '%s' WHERE time_id = %s AND group_id = %s" % (leaders_str, tid, gid)
             cursor.execute(query, leaders)
-
-
     return {'query': query}
+
+def delete_user(uid):
+    # Delete from user_contact
+    cursor.execute("DELETE FROM user_contact WHERE id=%d" % uid)
+    # Delete from association
+    cursor.execute("DELETE FROM association WHERE user_id=%s RETURNING group_id" % str(uid))
+    gid = cursor.fetchone()[0]
+    # Delete from other's preferences in association
+    cursor.execute("SELECT * FROM association WHERE group_id=%s" % gid)
+    for row in cursor.fetchall():
+        leaders = row[6]
+        if uid in leaders:
+            leaders.remove(uid)
+            leaders_str = ','.join(str(e) for e in leaders)
+            leaders_str = "{"+leaders_str+"}"
+            cursor.execute("UPDATE association SET leader_preferences = '%s' WHERE id=%d" % (leaders_str, row[0]))
+    # Delete from availability
+    cursor.execute("SELECT * FROM availability WHERE group_id=%s" % gid)
+    for row in cursor.fetchall():
+        members = row[3]
+        leaders = row[4]
+        if uid in members:
+            members.remove(uid)
+            members_str = ','.join(members)
+            members_str = "{"+members_str+"}"
+            cursor.execute("UPDATE availability SET members = '%s' WHERE time_id = %s AND group_id = %s" % (members_str, row[1], row[2]))
+        if uid in leaders:
+            leaders.remove(uid)
+            leaders_str = ','.join(leaders)
+            leaders_str = "{"+leaders_str+"}"
+            cursor.execute("UPDATE availability SET leaders = '%s' WHERE time_id = %s AND group_id = %s" % (leaders_str, row[1], row[2]))
+    return {'success': "successfully removed member"}
 
 def add_leaders(body):
     newLeaders = body.get('new_leaders')
@@ -122,7 +152,7 @@ def add_group(group):
 
     for tid in group.get('time_blocks'):
         block = group.get('time_blocks')[tid]
-        query = "INSERT INTO time_block (day, start_time, end_time) VALUES ('%s', %d, %d) RETURNING id" % (block['day'], block['start'], block['end'])
+        query = "INSERT INTO time_block (day, start_time, end_time) VALUES ('%s', %f, %f) RETURNING id" % (block['day'], block['start'], block['end'])
         cursor.execute(query)
         tid = cursor.fetchone()[0]
 

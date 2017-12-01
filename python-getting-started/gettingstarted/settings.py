@@ -17,10 +17,12 @@ import dj_database_url
 # PASSWORD = ''
 # LOGGED_IN = False
 
-GID = 1
+# For Testing Purposes
+GID = 31
 EMAIL = 'chris.fetterolf@gmail.com'
 PASSWORD = 'test'
 LOGGED_IN = True
+
 AID = None
 
 

@@ -49,6 +49,17 @@ body {
 
 .modal { position: absolute !important; }
 
+.del-img {
+  width: 30px;
+  float: right;
+  margin-right: -10px;
+  margin-top: -6px;
+  cursor: pointer;
+  display: None;
+}
+.del-img:hover {
+  opacity: .85;
+}
 
 
 #addUserForm {

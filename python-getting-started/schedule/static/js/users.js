@@ -6,10 +6,10 @@ var leader = false;
 var user_schedule = {};
 
 /********** GLOBAL VARS ************/
-var users = {};
-var time_blocks = {};
-var leader_groups = {};
-var matched_time_blocks = {};
+var users = {}
+var time_blocks = {}
+var leader_groups = {}
+var matched_time_blocks = {}
 var group_info;
 
 
@@ -17,6 +17,11 @@ $(document).ready(function(){
   getGroupInfo();
   handleUserInfo();
   handleUserList();
+
+  // Enable popovers
+  $(function () {
+    $('[data-toggle="popover"]').popover()
+  })
 });
 
 /******** DATABSE FUNCTIONS **********/
@@ -28,15 +33,13 @@ function getGroupInfo() {
         group_info = data;
         console.log(data);
         console.log(status);
-        users = data.users;
-        time_blocks = data.time_blocks;
-        leader_groups = data.leader_groups;
-        // console.log('users: ');
-        // console.log(users);
+        users = data.users
+        time_blocks = data.time_blocks
+        leader_groups = data.leader_groups
 
         // Set the header
-        $('#groupName').html(data.group_name);
-        $('#groupTerm').html(data.group_term);
+        $('#groupName').html(data.group_name)
+        $('#groupTerm').html(data.group_term)
 
         // Display the users
         setMemberTable(users);
@@ -183,7 +186,30 @@ var newLeaders = []
 
 function handleUserList() {
 
+  // Delete Users
+  $(document).on('click', '#deleteUserButton', function() {
+    if ( $('.del-img').css('display') == 'none' ){
+      $('.del-img').show()
+      $('#deleteUserButton').html('Done')
+    } else {
+      $('.del-img').hide()
+      $('#deleteUserButton').html('Delete Users')
+    }
+  });
+
+  // Delete user
+  $(document).on('click', '.del-img', function() {
+    var selectedID = $(this).attr('data-group-id')
+    deleteUser(selectedID)
+  });
+
+
   $(document).on('click', '.show-leader-pref', function() {
+
+    $('html,body').stop().animate({
+      scrollTop: $("#leaderModal").offset().top + 250
+    }, 700);
+
     var uid = $(this).parent().parent().attr('data-user-id')
     var user = users[uid]
 
@@ -228,6 +254,23 @@ function handleUserList() {
     }, 700);
   });
 
+}
+
+function deleteUser(uid) {
+  $.ajax({
+    url: "/ajax/db/user/",
+    type: "GET",
+    data: {
+      uid: uid,
+    },
+    success: function(response) {
+      console.log(response);
+      window.location.href = "/"
+    },
+    error: function(xhr) {
+      console.log(xhr);
+    }
+  });
 }
 
 function handleUserInfo() {
@@ -333,7 +376,7 @@ function newRow(users, user) {
   var cols = "";
   cols += '<td>' + users[user].first_name + ' ' + users[user].last_name + '</td>';
   cols += '<td>' + users[user].email + '</td>';
-  cols += '<td><a class="show-leader-pref blue-link">Click Here<a></td>';
+  cols += `<td><a href="#leaderModal" class="show-leader-pref blue-link">Click Here<a><img class="del-img" data-group-id="`+user+`" src="/static/img/delete_icon.png"/></td>`;
   newRow.append(cols);
   return newRow
 }
@@ -342,21 +385,21 @@ function show_availability() {
   alert('test')
 }
 
-// function updateUserTables(user) {
-//   var newRow = $("<tr>");
-//   var cols = "";
-//   var mem = '';
-//   var lead = '';
-//   if(user.member == true) {mem = 'X';}
-//   if(user.leader == true) {lead = 'X';}
-//
-//   cols += '<td>' + user.first_name + ' ' + user.last_name + '</td>';
-//   cols += '<td>' + mem + '</td>';
-//   cols += '<td>' + lead + '</td>';
-//   cols += '<td><a herf="#" class="request-user-schedule">Click Here<a></td>';
-//   newRow.append(cols);
-//   $("table.member-table").append(newRow);
-// }
+function updateUserTables(user) {
+  var newRow = $("<tr>");
+  var cols = "";
+  var mem = '';
+  var lead = '';
+  if(user.member == true) {mem = 'X';}
+  if(user.leader == true) {lead = 'X';}
+
+  cols += '<td>' + user.first_name + ' ' + user.last_name + '</td>';
+  cols += '<td>' + mem + '</td>';
+  cols += '<td>' + lead + '</td>';
+  cols += '<td><a herf="#" class="request-user-schedule">Click Here<a></td>';
+  newRow.append(cols);
+  $("table.member-table").append(newRow);
+}
 
 function resetUserSchedule() {
   user_schedule = {};

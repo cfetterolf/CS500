@@ -3,10 +3,37 @@
 {% block content %}
 <!-- Page Content -->
 
+    <!-- Tutorial Modal -->
+    <div class="modal fade" id="tutModal" tabindex="1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">How to Add Users</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <ul id="addLeaderList" class="list-group">
+              <li class="list-group-item"><div><strong>1.</strong></div><div class="tut-desc">Create a leader account for each subgroup (one per timeblock)</div></li>
+              <li class="list-group-item"><div class="bullet"><strong>a.</strong>If there is more than one person in a leader account, name that account with both names.</div></li>
+              <li class="list-group-item"><div class="bullet"><strong>b.</strong>Create separate member accounts for each person.</div></li>
+              <li class="list-group-item"><div><strong>2.</strong></div><div class="tut-desc">Input all members, with their leader preferences</div></li>
+              <li class="list-group-item"><div><strong>3.</strong></div><div class="tut-desc">Click 'Display Optimal Schedule'</div></li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success done" data-dismiss="modal">Got It</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="container mt-lg">
       <div class="header">
         <h3 class="header-left"><strong id="groupName"></strong></h3>
         <h5 class="header-left text-muted" id="groupTerm"></h5>
+        <img class="help-icon header-right" src="/static/img/help_icon.png" />
         <a href="{% url 'schedule' %}" class="btn btn-md btn-primary header-right" onclick='runAlgorithm()' id="runAlgorithm">Display Optimal Schedule</a>
         <button class="btn btn-success header-right" id="addUserButton">Add User</button>
         <button class="btn btn-danger header-right" id="deleteUserButton">Delete User</button>
@@ -91,11 +118,16 @@
         </div> <!-- ./row -->
 
 
+
+
       <div class="jumbotron mt-lg" id="addUserForm">
-        <h2>Add New User</h2>
+        <h2 style="margin-top: -50px;"><strong>Add New User</strong></h2>
+        <div class="alert alert-info" role="alert">
+          <strong>Tip:</strong> Hover over each section for more information and instructions!
+        </div>
         <form class="mt-sm" method="post">{% csrf_token %}
           <!-- Name -->
-          <div class="form-group row mt-lg">
+          <div class="form-group row mt-sm">
             <label for="nameInput" class="col-sm-2 col-form-label" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Enter a user's first and last name, seperated by a space.">Name</label>
             <div class="col-sm-10">
               <input class="form-control" id="nameInput" placeholder="First and Last">
@@ -121,26 +153,16 @@
           </div>
 
           <!-- Preferred Leaders -->
-          <div class="mt-lg preferred-leaders"><h4 data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Select the leaders that a member prefers to be matched with.  If the leader's infomation has not yet been entered, you can add more preferred leaders once the user is added to the table above.">Preferred Leaders</h4></div>
+          <div class="mt-lg preferred-leaders"><h4 style="width: 220px; cursor: pointer;" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Select all leaders that a member prefers to be matched with.  If the leader's infomation has not yet been entered, you can add more preferred leaders once the user is added to the table above.">
+              <strong>Preferred Leaders</strong></h4>
+          </div>
           <div id="preferredLeaders"></div>
-          <!-- <div class="form-check form-check-inline active mt-sm">
-            <label class="form-check-label">
-              <input class="form-check-input leaderCheckbox" type="checkbox" id="mariaCheckbox" value="maria"> Maria</input>
-            </label>
-          </div>
-          <div class="form-check form-check-inline">
-            <label class="form-check-label">
-              <input class="form-check-input leaderCheckbox" type="checkbox" id="paulCheckbox" value="paul"> Paul</input>
-            </label>
-          </div>
-          <div class="form-check form-check-inline">
-            <label class="form-check-label">
-              <input class="form-check-input leaderCheckbox" type="checkbox" id="sidCheckbox" value="sid"> Sid</input>
-            </label>
-          </div> -->
 
           <!-- Preferred Times -->
-          <div id="timeBlocks">
+          <div class="mt-lg preferred-times"><h4 style="width: 150px; cursor: pointer;" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Choose all times that a user is available.  The more time slots selected, the easier it is to match that user!">
+            <strong>Availability</strong></h4>
+          </div>
+          <div  style="margin-top: -20px;"id="timeBlocks">
           <div class=" row mt-lg mon-thurs time_blocks">
             <div class="col col-3" id="monday"><h5>Monday</h5></div>
             <div class="col col-3" id="tuesday"><h5>Tuesday</h5></div>

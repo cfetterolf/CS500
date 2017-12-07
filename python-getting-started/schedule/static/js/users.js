@@ -4,6 +4,7 @@ var leaders = [];
 var member = true;
 var leader = false;
 var user_schedule = {};
+var first_input = true;
 
 /********** GLOBAL VARS ************/
 var users = {}
@@ -249,10 +250,26 @@ function handleUserList() {
   // Click to add new user
   $("#addUserButton").click(function (event) {
     $("#addUserForm").show();
-    $('html,body').stop().animate({
-      scrollTop: $("#addUserForm").offset().top - 20
-    }, 700);
+    if (first_input) {
+      $('#tutModal').modal('show');
+    } else {
+      $('html,body').stop().animate({
+        scrollTop: $("#addUserForm").offset().top - 20
+      }, 700);
+    }
   });
+
+  $('#tutModal .done').click(function (event) {
+    if (first_input) {
+      $('html,body').stop().animate({
+        scrollTop: $("#addUserForm").offset().top - 20
+      }, 700);
+    }
+  })
+
+  $('.help-icon').click(function(event) {
+    $('#tutModal').modal('show');
+  })
 
 }
 
@@ -338,7 +355,6 @@ function handleUserInfo() {
     updateDB(user);
     // Close new user form
     $("#addUserForm").hide();
-
   });
 
   // Click to hide new user form
@@ -358,6 +374,7 @@ function setMemberTable(users) {
   n_mem = 0
   n_lead = 0
   for(var user in users) {
+    first_input = false;
     if (users[user].member == true ) {
       $("table.member-table").append(newRow(users, user));
       n_mem += 1

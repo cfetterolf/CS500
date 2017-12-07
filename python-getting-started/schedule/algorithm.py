@@ -102,7 +102,7 @@ def convertToSquareMatrix(members, time_blocks, leader_groups, sched_type):
     # Create our counting matrix to fill in: [tb][lg]
     # ct_matrix[tb_i][lg_j] = # of members that match with both tb_i & lg_j
     # sets to -10000 to check for init variable errors
-    ct_matrix = [[-1000000 for x in range(len(tb_map))] for y in range(len(lg_map))]
+    ct_matrix = [[-10000 for x in range(len(tb_map))] for y in range(len(lg_map))]
 
     #
     leader_avail = [(tb,lg) for tb in time_blocks for lg in
@@ -127,8 +127,6 @@ def convertToSquareMatrix(members, time_blocks, leader_groups, sched_type):
     # Create our member id matrix (duplicate of counting) to keep track of members we add
     mem_id_matrix = [[[] for x in range(len(tb_map))] for y in range(len(lg_map))]
 
-    # Matrix for members who match with that lg but is unavailable at that tb
-    # unavail_mem_id_matrix = [[[] for x in range(len(tb_map))] for y in range(len(lg_map))]
 
     # FILL TABLE
     # fills the ct_matrix & mem_id_matrix
@@ -176,22 +174,16 @@ def convertToSquareMatrix(members, time_blocks, leader_groups, sched_type):
                     # Append member ID to member id matrix at same index
                     mem_id_matrix[tb_index][lg_index].append(int(mem_id))
 
-                # else:
-                    # unavail_mem_id_matrix[tb_index][lg_index].append(int(mem_id))
-
                 # if lg not avail at tb, sets to -inf
                 # so hung alg will never pick tb-lg
                 # else:                                             # SCHARPRINT
                     # print('')                                     # SCHARPRINT
 
-
-
     # print(ct_matrix)
     return {"mem_id_matrix": mem_id_matrix,
             "ct_matrix": ct_matrix,
             "tb_map": tb_map,
-            "lg_map": lg_map,
-            # "unavail_mem_id_matrix": unavail_mem_id_matrix
+            "lg_map": lg_map
             }
 
 def makeIdMap(id_dict):
@@ -229,8 +221,6 @@ def run():
         'indexes': indexes,
         'member_matrix': hungarian_input_dict["mem_id_matrix"],
         'tb_map': hungarian_input_dict["tb_map"],
-        'lg_map': hungarian_input_dict["lg_map"],
-        'ct_matrix': count_matrix
-        # 'unavail_mem_matrix' : hungarian_input_dict["unavail_mem_id_matrix"]
+        'lg_map': hungarian_input_dict["lg_map"]
     }
     return ret_dict

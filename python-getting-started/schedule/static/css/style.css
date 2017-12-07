@@ -61,6 +61,17 @@ body {
   opacity: .85;
 }
 
+.help-icon {
+  width: 30px;
+  margin-left: 10px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.help-icon:hover{
+  opacity: 0.75;
+}
+
 
 #addUserForm {
   display: none;

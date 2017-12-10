@@ -12,16 +12,16 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import dj_database_url
 
-# GID = None
-# EMAIL = ''
-# PASSWORD = ''
-# LOGGED_IN = False
+GID = None
+EMAIL = ''
+PASSWORD = ''
+LOGGED_IN = False
 
 # For Testing Purposes
-GID = 31
-EMAIL = 'chris.fetterolf@gmail.com'
-PASSWORD = 'test'
-LOGGED_IN = True
+# GID = 31
+# EMAIL = 'chris.fetterolf@gmail.com'
+# PASSWORD = 'test'
+# LOGGED_IN = True
 
 AID = None
 

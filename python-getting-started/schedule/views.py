@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from django.http import Http404
 from django.http import HttpResponse
 from schedule.models import TimeBlock
-from schedule.db import getUsers, get_group_info, getTimeBlocks, get_alg_leader_groups, add_user, delete_user, add_leaders, set_gid, get_groups, login_account, signup_account, add_group, delete_group, reset_gid
+from schedule.db import getUsers, get_group_info, getTimeBlocks, get_alg_time_blocks, get_alg_leader_groups, add_user, delete_user, add_leaders, set_gid, get_groups, login_account, signup_account, add_group, delete_group, reset_gid
 from schedule.algorithm import run
 from django.conf import settings
 
@@ -54,7 +54,8 @@ def getGroupInfo(request):
             'leader_groups': get_alg_leader_groups(settings.GID),
             'gid': settings.GID,
             'group_name': get_group_info(settings.GID)['name'],
-            'group_term': get_group_info(settings.GID)['term']
+            'group_term': get_group_info(settings.GID)['term'],
+            'user_times': get_alg_time_blocks(settings.GID)
         }
         return JsonResponse(group_info)
     else:

@@ -221,6 +221,7 @@ def run():
         'indexes': indexes,
         'member_matrix': hungarian_input_dict["mem_id_matrix"],
         'tb_map': hungarian_input_dict["tb_map"],
-        'lg_map': hungarian_input_dict["lg_map"]
+        'lg_map': hungarian_input_dict["lg_map"],
+        'ct_matrix': count_matrix
     }
     return ret_dict
